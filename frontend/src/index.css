@@ -1,0 +1,14 @@
+:root, html, body{
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #000000;
+  color: #c1ff72;
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,67 @@
+.navWrapper{
+    border-bottom: 2px solid #bbf76e;
+    width: 100%;
+    height: 74px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentWrapper{
+    width: 90%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.leftItems{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+}
+
+.logoIcon{
+    height: 63px;
+}
+
+.logoText{
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.logoTextBold{
+    font-size: 37px;
+    font-weight: 700;
+    line-height: 35px;
+    margin: 0 8px 0 5px;
+}
+
+.logoTextVersion{
+    font-size: 14px;
+}
+
+.rightItems{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.rightItems > a{
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 19px;
+    margin-left: 20%;
+}
+
+.evolve{
+    font-weight: bold;
+    padding: 8px 20px;
+    border-radius: 22px;
+    background-color: #618039;
+}
