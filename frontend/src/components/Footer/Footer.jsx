@@ -1,9 +1,9 @@
 import styles from "./Footer.module.css"
 import { Link } from "react-router-dom";
 
-const Footer = (props) => {
+const Footer = ({className, props}) => {
   return (
-    <div className={styles.footerText} {...props}>
+    <div className={`${styles.footerText} ${className}`} {...props}>
         2025 © All rights reserved - Volv AI &nbsp; &nbsp;
         <Link to="/termsofuse" className={styles.footerLink}>Terms of Use</Link>
         <Link to="/FAQ" className={styles.footerLink}>FAQ</Link>  

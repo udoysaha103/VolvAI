@@ -16,7 +16,7 @@ function Navbar() {
         </Link>
         <div className={styles.rightItems}>
           <Link>About</Link>
-          <Link>Features</Link>
+          <Link to="/features">Features</Link>
           <Link className={styles.evolve}>Evolve</Link>
         </div>
       </div>
