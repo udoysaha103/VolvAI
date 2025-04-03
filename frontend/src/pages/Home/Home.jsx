@@ -4,11 +4,38 @@ import Footer from "../../components/Footer/Footer";
 import { useEffect, useRef, useState } from "react";
 
 function Home() {
-  // script.js
+  const coinAddress = "A16i7fjFagzf2Ejezhc4xidcZ8J7utmLLQCqzZRWpump";
+
+  const phase1cap = 100000;
+  const phase2cap = 300000;
+  const phase3cap = 1000000;
+  const phase4cap = 3000000;
+
+  const formatKMB = (num) => {
+    if (num >= 1000000000) {
+      return (num % 1000000000 === 0 ? (num / 1000000000).toFixed(0) : (num / 1000000000).toFixed(1)) + 'B';
+    } else if (num >= 1000000) {
+      return (num % 1000000 === 0 ? (num / 1000000).toFixed(0) : (num / 1000000).toFixed(1)) + 'M';
+    } else if (num >= 1000) {
+      return (num % 1000 === 0 ? (num / 1000).toFixed(0) : (num / 1000).toFixed(1)) + 'K';
+    } else {
+      return num.toString();
+    }
+  };
+
+  const formatAge = (timestamp) => {
+    const now = Date.now();
+    const age = now - timestamp;  //in milliseconds
+    const days = Math.floor(age / 86400000);
+    return days;
+  }
+  
   const canvasRef = useRef(null);
+
   const [buys, setBuys] = useState(0);
   const [sells, setSells] = useState(0);
   const [mCap, setMCap] = useState(0);
+  const [pairCreatedAt, setPairCreatedAt] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -225,8 +252,10 @@ function Home() {
 
 
   // in each 3 seconds, send a request to the Dexscreener API to get the current values of the coin
-  const coinAddress = "2HqhUGaUAAmeCpfr8tFgZo733Pxbqrr1f3Jtp4Gppump";
   const apiUrl = `https://api.dexscreener.com/token-pairs/v1/solana/${coinAddress}`;
+
+  const [hatchProgress, setHatchProgress] = useState(50);
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -236,6 +265,8 @@ function Home() {
           setBuys(data[0].txns.h1.buys);
           setSells(data[0].txns.h1.sells);
           setMCap(data[0].marketCap);
+          setPairCreatedAt(data[0].pairCreatedAt);
+          setHatchProgress(Math.min(data[0].marketCap * 100 / phase1cap, 100));
         })
         .catch(error => console.error("Error fetching coin data:", error));
     }, 3000);
@@ -247,6 +278,8 @@ function Home() {
         setBuys(data[0].txns.h1.buys);
         setSells(data[0].txns.h1.sells);
         setMCap(data[0].marketCap);
+        setPairCreatedAt(data[0].pairCreatedAt);
+        setHatchProgress(Math.min(data[0].marketCap * 100 / phase1cap, 100));
       })
       .catch(error => console.error("Error fetching coin data:", error));
 
@@ -254,6 +287,57 @@ function Home() {
   }, []);
 
 
+  const [hatchingProbability, setHatchingProbability] = useState(Math.min(Math.floor(hatchProgress * Math.random() * 2), 100));
+
+  const [dataFlow, setDataFlow] = useState(103 + (hatchingProbability * Math.random()));
+  const [oxygenFlow, setOxygenFlow] = useState(0.58 + (hatchingProbability * Math.random() * 3 /100));
+  const [shellIntegrity, setShellIntegrity] = useState(Math.min((100 - hatchingProbability) * Math.random() * 5, 100));
+
+  const [ambientTemperature, setAmbientTemperature] = useState(24);
+  const [energyLevel, setEnergyLevel] = useState("Normal");
+  const [airPurity, setAirPurity] = useState(66);
+
+  const [memoryCapacity, setMemoryCapacity] = useState(43);
+  const [emotionalComplexity, setEmotionalComplexity] = useState(0.78);
+  const [adaptibility, setAdaptibility] = useState(0.65);
+  const [empathyIndex, setEmpathyIndex] = useState(0.82);
+  const [awareness, setAwareness] = useState(0.75);
+
+
+  // in each 5 seconds, the following states will be updated:
+  // hatchingProbability = if hatchProgress is 100, then 100, else Math.min(hatchProgress * Math.random() * 2, 100)
+  // dataFlow = 103 + (hatchingProbability * Math.random())
+  // oxygenFlow = 0.58 + (hatchingProbability * Math.random() * 3 /100)
+  // shellIntegrity = if hatchProgress is 100, then 0, else Math.min((100 - hatchingProbability) * Math.random() * 5, 100)
+  // ambientTemperature = random number between 20 and 27
+  // energyLevel = if hatchProgress > 90, then "High", else randomly between "Low", "Normal", "High"
+  // airPurity = random number between 70 and 95
+  // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (hatchProgress === 100) {
+        setHatchingProbability(100);
+        setShellIntegrity(0);
+      } else {
+        setHatchingProbability(Math.min(hatchProgress * Math.random() * 2, 100));
+        setShellIntegrity(Math.min((100 - hatchingProbability) * Math.random() * 5, 100));
+      }
+      setDataFlow(103 + (hatchingProbability * Math.random()));
+      setOxygenFlow(0.58 + (hatchingProbability * Math.random() * 3 / 100));
+      setAmbientTemperature(Math.floor(Math.random() * (27 - 20 + 1)) + 20);
+      setEnergyLevel(hatchProgress > 90 ? "High" : ["Low", "Normal", "High"][Math.floor(Math.random() * 3)]);
+      setAirPurity(Math.floor(Math.random() * (95 - 70 + 1)) + 70);
+
+      // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
+      setMemoryCapacity(hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1)) / 100 + 10);
+      setEmotionalComplexity(hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1)) / 100 + 10);
+      setAdaptibility(hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1)) / 100 + 10);
+      setEmpathyIndex(hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1)) / 100 + 10);
+      setAwareness(hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1)) / 100 + 10);
+    }, 5000);
+
+    return () => clearInterval(interval); // Clear the interval on component unmount
+  }, []);
 
   return (
     <div>
@@ -264,18 +348,205 @@ function Home() {
             <div className={styles.leftPanel}>
               <div className={`${styles.box} ${styles.box1}`}>
                 <h3>Hatch Progress</h3>
-                <div>Progress, {mCap}</div>
-                <div>{buys}, {sells}</div>
+                <div className={styles.hatchProgress}>
+                  <div className={styles.hatchProgressBar}>
+                    {Array.from({ length: Math.floor(hatchProgress / 2) }).map((_, index) => (
+                      <div key={index} className={styles.hatchProgressSegment}></div>
+                    ))}
+                  </div>
+                  <div className={styles.hatchProgressValue}>{hatchProgress.toFixed(1)}%</div>
+                </div>
+                <div className={styles.buySell}>
+                  <div className={styles.buySellText}>Buys</div>
+                  <div className={styles.buySellChart}>
+                    <div className={styles.buyValue} style={{width: `${buys*100/(buys+sells)}%`}}>{buys}</div>
+                    <div className={styles.sellValue} style={{width: `${sells*100/(buys+sells)}%`}}>{sells}</div>
+                  </div>
+                  <div className={styles.buySellText}>Sells</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Mcap</div>
+                  <div className={styles.statusValue}>{formatKMB(mCap)}</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Data Flow</div>
+                  <div className={styles.statusValue}>{dataFlow.toFixed(1)} GB</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Oxygen Flow</div>
+                  <div className={styles.statusValue}>{oxygenFlow.toFixed(1)} LPM</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Shell Integrity</div>
+                  <div className={styles.statusValue}>{shellIntegrity.toFixed(1)} %</div>
+                </div>
               </div>
-              <div className={`${styles.box} ${styles.box2}`}></div>
+
+              <div className={`${styles.box} ${styles.box2}`}>
+                <h3>Embryo Status</h3>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Days Active</div>
+                  <div className={styles.statusValue}>{formatAge(pairCreatedAt) + 1}</div>
+                </div>
+                
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Hatching Probability</div>
+                  <div className={styles.statusValue}>{hatchingProbability.toFixed(2)} %</div>
+                </div>
+                
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Ambient Temperature</div>
+                  <div className={styles.statusValue}>{ambientTemperature} ° C</div>
+                </div>
+                
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Energy Levels</div>
+                  <div className={styles.statusValue}>{energyLevel}</div>
+                </div>
+                
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Air Purity</div>
+                  <div className={styles.statusValue}>{airPurity} %</div>
+                </div>
+              </div>
             </div>
             <div className={styles.middlePanel}>
               <img src="./egg.svg" alt="Egg" />
               <p>Wait for the egg to hatch</p>
             </div>
             <div className={styles.rightPanel}>
-              <div className={`${styles.box} ${styles.box3}`}></div>
-              <div className={`${styles.box} ${styles.box4}`}></div>
+              <div className={`${styles.box} ${styles.box3}`}>
+                <h3>Evolution Phase</h3>
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>Phase 1 : Hatchling</div>
+                    <div className={styles.phaseStageCap}>Marekt Cap: {formatKMB(phase1cap)}</div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${Math.min((mCap * 100 / phase1cap), 100)}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(Math.min((mCap * 100 / phase1cap), 100))}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{Math.min((mCap * 100 / phase1cap), 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>Phase 2 : Adolescent</div>
+                    <div className={styles.phaseStageCap}>Marekt Cap: {formatKMB(phase2cap)}</div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${Math.min((mCap * 100 / phase2cap), 100)}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(Math.min((mCap * 100 / phase2cap), 100))}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{Math.min((mCap * 100 / phase2cap), 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>Phase 3 : Mature</div>
+                    <div className={styles.phaseStageCap}>Marekt Cap: {formatKMB(phase3cap)}</div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${Math.min((mCap * 100 / phase3cap), 100)}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(Math.min((mCap * 100 / phase3cap), 100))}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{Math.min((mCap * 100 / phase3cap), 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>Phase 4 : Adult</div>
+                    <div className={styles.phaseStageCap}>Marekt Cap: {formatKMB(phase4cap)}</div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${Math.min((mCap * 100 / phase4cap), 100)}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(Math.min((mCap * 100 / phase4cap), 100))}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{Math.min((mCap * 100 / phase4cap), 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={`${styles.box} ${styles.box4}`}>
+                <h3>Character Traits</h3>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>
+                    Memory Capacity
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${memoryCapacity}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(memoryCapacity)}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{memoryCapacity.toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>
+                    Emotional Complexity
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${emotionalComplexity}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(emotionalComplexity)}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{emotionalComplexity.toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>
+                    Adaptibility
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${adaptibility}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(adaptibility)}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{adaptibility.toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>
+                    Empathy Index
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${empathyIndex}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(empathyIndex)}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{empathyIndex.toFixed(1)}%</div>
+                  </div>
+                </div>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>
+                    Awareness
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div className={styles.left} style={{width:`${awareness}%`}}></div>
+                      <div className={styles.right} style={{width:`${100-(awareness)}%`}}></div>
+                    </div>
+                    <div className={styles.progressPercentage}>{awareness.toFixed(1)}%</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
