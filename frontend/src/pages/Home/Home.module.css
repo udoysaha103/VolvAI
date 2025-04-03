@@ -32,19 +32,210 @@
     border: 0.8px solid #fdfdc0;
     box-shadow: -5px -3px 5px #c1ff72;
     margin-top: 30px;
-    padding: 20px;
+    padding: 25px;
+}
+
+.box h3{
+    font-size: 29px;
+    font-weight: 700;
+    margin-bottom: 3%;
+}
+
+.box1 h3{
+    margin-bottom: 2%;
+}
+
+.hatchProgress{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 1%;
+}
+
+.hatchProgressBar{
+    width: 100%;
+    height: 27px;
+    background-color: #333432;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    position: relative;
+}
+
+.hatchProgressSegment{
+    height: 100%;
+    background-color: #c1ff72;
+    width: 1.5%;
+    margin-right: 0.5%;
+}
+
+.hatchProgressValue{
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    margin-right: 1%;
+    text-shadow: #333432 0px 0px 5px;
+    -webkit-text-stroke: 0.5px #333432;
+}
+
+.buySell{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 2.5%;
+}
+
+.buySellText{
+    font-size: 16px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buySellChart{
+    width: 60%;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: #333432 0px 0px 5px;
+}
+
+.buySellChart div{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.buyValue{
+    width: 50%;
+    background-color: #c1ff72;
+    padding-left: 10%;
+    justify-content: flex-start;
+}
+
+.sellValue{
+    width: 50%;
+    background-color: #8f0a11;
+    padding-right: 10%;
+    justify-content: flex-end;
+}
+
+.box1 .status{
+    margin-top: 3%;
 }
 
 .box2{
     box-shadow: -5px 5px 5px #c1ff72;
 }
 
+.status{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4.45%;
+}
+
+.statusName{
+    font-size: 18px;
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+.statusValue{
+    font-size: 24px;
+    font-weight: 700;
+}
+
 .box3{
     box-shadow: 5px -3px 5px #c1ff72;
 }
 
+.phase{
+    width: 100%;
+    margin-top: 3%;
+}
+
+.phaseStage{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.phaseStageName{
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.phaseStageCap{
+    font-size: 12px;
+    color: #ffaf49;
+}
+
+.phaseProgress{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1%;
+}
+
+.phaseProgressBar{
+    width: 85%;
+    height: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 0.8px solid #fdfdc0; */
+    border-radius: 5px;
+    margin-top: 0.5%;
+}
+
+.phaseProgressBar .left{
+    width: 50%;
+    height: 100%;
+    background-color: #8eea6f;
+    border-radius: 5px 0 0 5px;
+}
+
+.phaseProgressBar .right{
+    width: 50%;
+    height: 100%;
+    background-color: #c2c2c2;
+    border-radius: 0 5px 5px 0;
+}
+
+.phaseProgress .progressPercentage{
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
 .box4{
     box-shadow: 5px 5px 5px #c1ff72;
+}
+
+.trait{
+    width: 100%;
+}
+
+.traitName{
+    font-size: 19px;
+    color: #ffffff;
+}
+
+.trait .phaseProgress .progressPercentage{
+    color: #ffffff;
 }
 
 .middlePanel{
