@@ -1,0 +1,112 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  flex-grow: 1;
+}
+.chatbox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 60%;
+  width: 70%;
+  border-radius: 26px;
+  border: 2px solid #8ebb53;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0,0,0,0.81);
+  padding: 10px;
+}
+.chatContainer {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: scroll;
+}
+.chatContainer::-webkit-scrollbar {
+  background-color: transparent;
+  width: 10px;
+}
+.chatContainer::-webkit-scrollbar-thumb {
+  background-color: #8ebb53;
+  border-radius: 10px;
+}
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.chatInputContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chatInputContainer > * {
+  margin: 0px 10px;
+}
+
+.chatInputContainer > input {
+  height: 46px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 26px;
+  border: 1px solid #ffffff;
+  padding-inline: 24px;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+.chatInputContainer > button {
+  cursor: pointer;
+  height: 47px;
+  width: 116px;
+  padding: 0px 8px;
+  border: 0;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: #618039;
+  color: #ffffff;
+  font-size: 19px;
+  font-family: "Quicksand";
+  font-weight: 700;
+  line-height: 25px;
+  outline: none;
+}
+.botMessage {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: #8cb952;
+  font-size: 14px;
+  font-family: "Quicksand";
+  line-height: 16px;
+}
+.botMessage > * {
+  margin-inline: 10px;
+}
+.userMessage {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: "Quicksand";
+  line-height: 16px;
+  text-align: right;
+}
+.chatMessage{
+    margin: 20px 0px;
+}

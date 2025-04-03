@@ -7,7 +7,7 @@ const Features = () => {
   return (
     <div className={styles.container}>
       <Navbar />
-      <div className={styles.content}>
+      <div className={`${styles.content} content`}>
         <div className={styles.row}>
           <img src="/hatching.svg" />
           <div className={styles.text}>

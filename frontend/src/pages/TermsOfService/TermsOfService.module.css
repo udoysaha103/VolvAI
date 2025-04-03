@@ -1,0 +1,23 @@
+.content{
+    padding: 20px;
+}
+.header{
+  color: #c1ff72;
+  font-size: 32px;
+  font-family: "Quicksand";
+  font-weight: 700;
+  text-align: center;
+}
+.content > p {
+  color: #ffffff;
+  font-size: 18px;
+  font-family: "Quicksand";
+  line-height: 21px;
+}
+.subheader{
+  color: #c1ff72;
+  font-size: 20px;
+  font-family: "Quicksand";
+  font-weight: 700;
+  line-height: 24px;
+}

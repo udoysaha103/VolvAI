@@ -1,0 +1,42 @@
+.header {
+  color: #c1ff72;
+  font-size: 32px;
+  font-family: "Quicksand";
+  font-weight: 700;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.content {
+  padding-inline: 10%;
+  flex-grow: 1;
+}
+.itemBox {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  border: 0.8px solid #ffffff;
+  box-sizing: border-box;
+  margin: 2% 0;
+  padding: 1%;
+}
+.itemHeader{
+  color: #c1ff72;
+  font-size: 20px;
+  font-family: "Quicksand";
+  font-weight: 700;
+}
+.itemText{
+  color: #ffffff;
+  font-size: 18px;
+  font-family: "Quicksand";
+}
+.contentBox{
+  background-color: #101010;
+  border-radius: 26px;
+  box-shadow: 5px 5px 10px #c1ff72;
+  margin: 2% 0;
+  padding: 2%;
+  opacity: 0.69;
+}
