@@ -1,5 +1,5 @@
-import styles from './Navbar.module.css'
-import { Link } from 'react-router-dom'
+import styles from "./Navbar.module.css";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -15,13 +15,23 @@ function Navbar() {
           </div>
         </Link>
         <div className={styles.rightItems}>
-          <Link>About</Link>
+          <Link
+            to="/#about"
+            onClick={() => {
+              const element = document.getElementById("about");
+              element.scrollIntoView({ behavior: "smooth", block: "center" });
+            }}
+          >
+            About
+          </Link>
           <Link to="/features">Features</Link>
-          <Link className={styles.evolve}>Evolve</Link>
+          <Link className={styles.evolve} to="/chatbot">
+            Evolve
+          </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

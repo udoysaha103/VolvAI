@@ -64,6 +64,9 @@
   height: 46px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 26px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: "Quicksand";
   border: 1px solid #ffffff;
   padding-inline: 24px;
   box-sizing: border-box;
