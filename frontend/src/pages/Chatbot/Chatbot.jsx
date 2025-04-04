@@ -1,8 +1,9 @@
-import React from "react";
+import React, { use } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Chatbot.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-const isDisabled = false; // Replace with your actual condition
+
 const chats = [
   {
     bot: "Hello! How can I assist you today?",
@@ -23,6 +24,46 @@ const chats = [
 ];
 
 const Chatbot = () => {
+  const coinAddress = import.meta.env.VITE_COIN_ADDRESS;
+  const phase1cap = Number(import.meta.env.VITE_HATCH_CAP);
+
+  const [mCap, setMCap] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const apiUrl = `https://api.dexscreener.com/token-pairs/v1/solana/${coinAddress}`;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          setMCap(data[0].marketCap);
+        })
+        .catch((error) => console.error("Error fetching coin data:", error));
+    }, 3000);
+
+    // fetch once immediately
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setMCap(data[0].marketCap);
+      })
+      .catch((error) => console.error("Error fetching coin data:", error));
+
+    return () => clearInterval(interval); // Clear the interval on component unmount
+  }, []);
+
+
+  useEffect(() => {
+    if (mCap >= phase1cap) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }
+  , [mCap]);
+
+
   return (
     <div className={styles.container}>
       <Navbar />

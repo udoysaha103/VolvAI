@@ -5,9 +5,9 @@ import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
 function Home() {
-  const coinAddress = "A16i7fjFagzf2Ejezhc4xidcZ8J7utmLLQCqzZRWpump";
+  const coinAddress = import.meta.env.VITE_COIN_ADDRESS;
 
-  const phase1cap = 100000;
+  const phase1cap = Number(import.meta.env.VITE_HATCH_CAP);
   const phase2cap = 300000;
   const phase3cap = 1000000;
   const phase4cap = 3000000;
@@ -389,22 +389,23 @@ function Home() {
   // hatchingProbability = if hatchProgress is 100, then 100, else Math.min(hatchProgress * Math.random() * 2, 100)
   // dataFlow = 103 + (hatchingProbability * Math.random())
   // oxygenFlow = 0.58 + (hatchingProbability * Math.random() * 3 /100)
-  // shellIntegrity = if hatchProgress is 100, then 0, else Math.min((100 - hatchingProbability) * Math.random() * 5, 100)
+  // shellIntegrity = if hatchProgress is 100, then 0, else Math.min((100 - hatchingProbability) * Math.random() * 2, 100)
   // ambientTemperature = random number between 20 and 27
   // energyLevel = if hatchProgress > 90, then "High", else randomly between "Low", "Normal", "High"
   // airPurity = random number between 70 and 95
   // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
   useEffect(() => {
-    const interval = setInterval(() => {
+      setHatchProgress(Math.min((mCap * 100) / phase1cap, 100));
       if (hatchProgress === 100) {
+        console.log("Hatch Progress is 100%");
         setHatchingProbability(100);
         setShellIntegrity(0);
       } else {
         setHatchingProbability(
-          Math.min(hatchProgress * Math.random() * 2, 100)
+          Math.min(hatchProgress * Math.random() * 2 + 20, 100)
         );
         setShellIntegrity(
-          Math.min((100 - hatchingProbability) * Math.random() * 5, 100)
+          Math.min((100 - hatchingProbability) * Math.random() * 2 + 10, 100)
         );
       }
       setDataFlow(103 + hatchingProbability * Math.random());
@@ -419,34 +420,31 @@ function Home() {
 
       // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
       setMemoryCapacity(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1))) /
+        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
           100 +
-          10
+          30
       );
       setEmotionalComplexity(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1))) /
+        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
           100 +
-          10
+          30
       );
       setAdaptibility(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1))) /
+        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
           100 +
-          10
+          30
       );
       setEmpathyIndex(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1))) /
+        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
           100 +
-          10
+          30
       );
       setAwareness(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 10 + 1))) /
+        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
           100 +
-          10
+          30
       );
-    }, 5000);
-
-    return () => clearInterval(interval); // Clear the interval on component unmount
-  }, []);
+  }, [mCap]);
 
   return (
     <div>
@@ -469,7 +467,7 @@ function Home() {
                   )}
                 </div>
                 <div className={styles.hatchProgressValue}>
-                  {hatchProgress.toFixed(1)}%
+                  {hatchProgress % 1 === 0 ? hatchProgress.toFixed(0) : hatchProgress.toFixed(1)}%
                 </div>
               </div>
               <div className={styles.buySell}>
@@ -587,7 +585,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase1cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase1cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase1cap, 100).toFixed(0) : Math.min((mCap * 100) / phase1cap, 100).toFixed(1)}%
                   </div>
                 </div>
               </div>
@@ -619,7 +617,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase2cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase2cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase2cap, 100).toFixed(0) : Math.min((mCap * 100) / phase2cap, 100).toFixed(1)}%
                   </div>
                 </div>
               </div>
@@ -649,7 +647,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase3cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase3cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase3cap, 100).toFixed(0) : Math.min((mCap * 100) / phase3cap, 100).toFixed(1)}%
                   </div>
                 </div>
               </div>
@@ -679,7 +677,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase4cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase4cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase4cap, 100).toFixed(0) : Math.min((mCap * 100) / phase4cap, 100).toFixed(1)}%
                   </div>
                 </div>
               </div>
