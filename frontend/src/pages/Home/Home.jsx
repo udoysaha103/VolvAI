@@ -90,32 +90,32 @@ function Home() {
       "脳",
       "1",
       "波",
-      "動",
+      "3",
       "監",
       "視",
       "来",
       "術",
       "2",
       "光",
-      "輝",
+      "5",
       "心",
       "拍",
       "数",
       "析",
-      "断",
+      "9",
       "常",
       "告",
-      "ム",
+      "7",
       "タ",
       "示",
     ];
 
     if (digitalRain) {
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 25; i++) {
         const span = document.createElement("span");
         span.innerText =
           kanjiCharacters[Math.floor(Math.random() * kanjiCharacters.length)];
-        span.style.left = Math.random() * 100 + "%";
+        span.style.left = parseInt(Math.random() * 100) + "%";
         span.style.animationDelay = Math.random() * 3 + "s";
         digitalRain.appendChild(span);
       }
@@ -554,7 +554,7 @@ function Home() {
             </div>
           </div>
           <div className={styles.middlePanel}>
-            <img src="./egg.svg" alt="Egg" />
+            <img src="./0.png" alt="Egg" />
             <p>Wait for the egg to hatch</p>
           </div>
           <div className={styles.rightPanel}>

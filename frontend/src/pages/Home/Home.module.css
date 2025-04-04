@@ -260,6 +260,18 @@
 .middlePanel img{
     position: absolute;
     width: 80%;
+    animation: levitate 1.5s infinite alternate ease-in-out;
+}
+.middlePanel img:hover{
+    animation: none;
+}
+@keyframes levitate {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-15px);
+    }
 }
 
 .middlePanel p{

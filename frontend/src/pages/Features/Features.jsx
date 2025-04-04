@@ -2,14 +2,16 @@ import React from "react";
 import styles from "./Features.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 const Features = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.container}>
       <Navbar />
       <div className={`${styles.content} content`}>
         <div className={styles.row}>
-          <img src="/hatching.svg" />
+          <img src="/hatching.svg" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Hatchling: v0.1_Genesis</h1>
             <ul>
@@ -21,7 +23,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/adolescent.svg" />
+          <img src="/adolescent.svg" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>
               Adolescent: v0.5_Quantum_Evolution
@@ -35,7 +37,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/mature.svg" />
+          <img src="/mature.svg" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Mature: v0.8_Singularity</h1>
             <ul>
@@ -47,7 +49,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/adult.svg" />
+          <img src="/adult.svg" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Adult: v1.0_OmniTrade_Volv AI</h1>
             <ul>

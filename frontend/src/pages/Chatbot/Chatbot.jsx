@@ -121,7 +121,7 @@ const Chatbot = () => {
         console.error("Error fetching coin data:", error);
         setError(error);
       });
-    if (!localStorage.getItem("threadId")) {
+    if (!chats.length) {
       fetch(`${import.meta.env.VITE_API_URL}/create-thread`, {
         method: "POST",
       })
@@ -137,32 +137,49 @@ const Chatbot = () => {
           console.error("Error creating thread:", error);
           setError(error);
         });
-    } else {
-      fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/get-messages?threadId=${localStorage.getItem("threadId")}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setThreadId(localStorage.getItem("threadId"));
-          setChats([
-            { role: "assistant", text: "Hello! How can I assist you today?" },
-            ...data.messages
-              .map((message) =>
-                message.content.map((e) => ({
-                  role: message.role,
-                  text: e.value,
-                }))
-              )
-              .flat()]
-          );
-        })
-        .catch((error) => {
-          console.error("Error fetching messages:", error);
-          setError(error);
-        });
-    }
+    } 
+    // if (!localStorage.getItem("threadId")) {
+    //   fetch(`${import.meta.env.VITE_API_URL}/create-thread`, {
+    //     method: "POST",
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       setThreadId(data.threadId);
+    //       localStorage.setItem("threadId", data.threadId);
+    //       setChats([
+    //         { role: "assistant", text: "Hello! How can I assist you today?" },
+    //       ]);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error creating thread:", error);
+    //       setError(error);
+    //     });
+    // } else {
+    // fetch(
+    //   `${
+    //     import.meta.env.VITE_API_URL
+    //   }/get-messages?threadId=${localStorage.getItem("threadId")}`
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setThreadId(localStorage.getItem("threadId"));
+    //     setChats([
+    //       { role: "assistant", text: "Hello! How can I assist you today?" },
+    //       ...data.messages
+    //         .map((message) =>
+    //           message.content.map((e) => ({
+    //             role: message.role,
+    //             text: e.value,
+    //           }))
+    //         )
+    //         .flat()]
+    //     );
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching messages:", error);
+    //     setError(error);
+    //   });
+    // }
 
     return () => {
       clearInterval(interval);
