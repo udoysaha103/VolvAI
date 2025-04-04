@@ -28,6 +28,9 @@
   flex-grow: 1;
   padding: 10px;
   overflow-y: scroll;
+  background-image: url(/wm.svg);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .chatContainer::-webkit-scrollbar {
   background-color: transparent;
@@ -36,13 +39,6 @@
 .chatContainer::-webkit-scrollbar-thumb {
   background-color: #8ebb53;
   border-radius: 10px;
-}
-.watermark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
 }
 .info {
   position: absolute;
@@ -90,12 +86,28 @@
 }
 .botMessage {
   display: flex;
-  align-items: center;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   color: #8cb952;
   font-size: 14px;
   font-family: "Quicksand";
   line-height: 16px;
+}
+.botText{
+  background-color: #8cb952;
+  color: #000000;
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+.userText{
+  background-color: #1a240d;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 70%;
+  word-wrap: break-word;
 }
 .botMessage > * {
   margin-inline: 10px;
@@ -107,7 +119,7 @@
   color: #ffffff;
   font-size: 14px;
   font-family: "Quicksand";
-  line-height: 16px;
+  margin-right: 20px;
   text-align: right;
 }
 .chatMessage{

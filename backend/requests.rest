@@ -1,0 +1,13 @@
+POST http://localhost:5000/send-message
+Content-Type: application/json
+
+{
+    "message": "What is your name?",
+    "threadId": "thread_ho2fNdXYn2ohGpyJatsmvxqP"
+}
+###
+
+POST http://localhost:5000/create-thread
+
+###
+GET http://localhost:5000/get-messages?threadId=thread_R2AnRA279amkgsEjn0q75Sbq
