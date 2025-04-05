@@ -6,8 +6,25 @@ const OpenAI = require('openai');
 
 const app = express();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-app.use(cors());
+const allowedOrigins = [
+  `http://${process.env.CLIENT_DOMAIN}`,
+  `https://${process.env.CLIENT_DOMAIN}`,
+  `http://www.${process.env.CLIENT_DOMAIN}`,
+  `https://www.${process.env.CLIENT_DOMAIN}`,
+]
+  
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Allow cookies or auth headers if needed
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+}));
 app.use(bodyParser.json());
 
 
