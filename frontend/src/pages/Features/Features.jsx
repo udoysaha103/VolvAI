@@ -35,7 +35,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/mature.svg" />
+          <img src="/mature.png" />
           <div className={styles.text}>
             <h1 className={styles.header}>Mature: v0.8_Singularity</h1>
             <ul>

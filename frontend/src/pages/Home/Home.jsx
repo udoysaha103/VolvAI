@@ -1,7 +1,7 @@
 import styles from "./Home.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
 function Home() {
@@ -41,6 +41,9 @@ function Home() {
     const days = Math.floor(age / 86400000);
     return days;
   };
+
+  const navigate = useNavigate();
+  const clickCountRef = useRef(0);
 
   const canvasRef = useRef(null);
 
@@ -553,10 +556,22 @@ function Home() {
               </div>
             </div>
           </div>
+
           <div className={styles.middlePanel}>
-            <img src="./egg.svg" alt="Egg" />
-            <p>Wait for the egg to hatch</p>
+            {hatchProgress < 100 ? (
+              <>
+                <img src={"0.png"} alt="Hatchling" onClick={()=> clickCountRef.current++} className={styles.hatchlingImg} />
+              </>
+            ) : (
+              <>
+                <img src="./adolescent.png" alt="Adolescent" className={styles.adolescentImg} onClick={()=> navigate("/chatbot")} />
+                <p className={styles.adolescentText} onClick={()=> navigate("/chatbot")}>Click to Interact with Volv</p>
+              </>
+            )}
+            {/* <img src="./egg.svg" alt="Egg" />
+            <p>Wait for the egg to hatch</p> */}
           </div>
+
           <div className={styles.rightPanel}>
             <div className={`${styles.box} ${styles.box3}`}>
               <h3>Evolution Phase</h3>
