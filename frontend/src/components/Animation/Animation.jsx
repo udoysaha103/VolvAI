@@ -110,7 +110,7 @@ const Animation = () => {
           finalY = y * scale;
         }
 
-        particle.style.transform = `translate3d(${finalX+swarmContainerRef.current.offsetWidth/2}px, ${finalY+swarmContainerRef.current.offsetHeight/2}px, ${z}px)`;
+        particle.style.transform = `translate3d(${finalX+swarmContainerRef.current?.offsetWidth/2}px, ${finalY+swarmContainerRef.current?.offsetHeight/2}px, ${z}px)`;
       }
 
       animateParticle();

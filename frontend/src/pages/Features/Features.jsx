@@ -23,7 +23,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/adolescent.png" onClick={() => navigate('/chatbot')}/>
+          <img src="/adolescent.png" onClick={() => navigate('/chatbot')} style={{height:"85px"}}/>
           <div className={styles.text}>
             <h1 className={styles.header}>
               Adolescent: v0.5_Quantum_Evolution
@@ -37,7 +37,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/mature.png" />
+          <img src="/mature.png" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Mature: v0.8_Singularity</h1>
             <ul>

@@ -7,6 +7,17 @@ import Animation from "../../components/Animation/Animation";
 
 function Home() {
   const coinAddress = import.meta.env.VITE_COIN_ADDRESS;
+  const hatchlingRef = useRef(null);
+  const handleClick = () => {
+    if (hatchlingRef.current) {
+      const time = 0.1;
+      hatchlingRef.current.style.transition = `transform ${time}s`;
+      hatchlingRef.current.style.transform = "scale(0.95)";
+      setTimeout(() => {
+        hatchlingRef.current.style.transform = "scale(1)";
+      }, time * 1000);
+    }
+  };
 
   const phase1cap = Number(import.meta.env.VITE_HATCH_CAP);
   const phase2cap = 300000;
@@ -48,6 +59,7 @@ function Home() {
   const canvasRef = useRef(null);
 
   const [buys, setBuys] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
   const [sells, setSells] = useState(0);
   const [mCap, setMCap] = useState(0);
   const [pairCreatedAt, setPairCreatedAt] = useState(0);
@@ -446,10 +458,9 @@ function Home() {
     );
   }, [mCap]);
 
-  
   return (
     <div>
-      <Navbar style={{backgroundColor: "transparent"}}/>
+      <Navbar />
 
       <div className={styles.homeWrapper}>
         <Animation />
@@ -502,21 +513,21 @@ function Home() {
               <div className={styles.status}>
                 <div className={styles.statusName}>Data Flow</div>
                 <div className={styles.statusValue}>
-                  {dataFlow.toFixed(1)} GB
+                  {dataFlow.toFixed(dataFlow%1===0?0:1)} GB
                 </div>
               </div>
 
               <div className={styles.status}>
                 <div className={styles.statusName}>Oxygen Flow</div>
                 <div className={styles.statusValue}>
-                  {oxygenFlow.toFixed(1)} LPM
+                  {oxygenFlow.toFixed(oxygenFlow%1===0?0:1)} LPM
                 </div>
               </div>
 
               <div className={styles.status}>
                 <div className={styles.statusName}>Shell Integrity</div>
                 <div className={styles.statusValue}>
-                  {shellIntegrity.toFixed(1)} %
+                  {shellIntegrity.toFixed(shellIntegrity%1===0?0:1)} %
                 </div>
               </div>
             </div>
@@ -534,7 +545,7 @@ function Home() {
               <div className={styles.status}>
                 <div className={styles.statusName}>Hatching Probability</div>
                 <div className={styles.statusValue}>
-                  {hatchingProbability.toFixed(2)} %
+                  {hatchingProbability.toFixed(hatchingProbability%1===0?0:1)} %
                 </div>
               </div>
 
@@ -560,16 +571,60 @@ function Home() {
           <div className={styles.middlePanel}>
             {hatchProgress < 100 ? (
               <>
-                <img src={"0.png"} alt="Hatchling" onClick={()=> clickCountRef.current++} className={styles.hatchlingImg} />
+                <img
+                  ref={hatchlingRef}
+                  src={
+                    clickCount < 2
+                      ? "0.png"
+                      : clickCount < 6
+                      ? "2.png"
+                      : clickCount < 12
+                      ? "6.png"
+                      : clickCount < 20
+                      ? "12.png"
+                      : clickCount < 26
+                      ? "20.png"
+                      : clickCount < 32
+                      ? "26.png"
+                      : clickCount < 40
+                      ? "32.png"
+                      : clickCount < 50
+                      ? "40.png"
+                      : "50.png"
+                  }
+                  alt="Hatchling"
+                  onClick={() => {
+                    setClickCount(clickCount + 1);
+                    handleClick();
+                  }}
+                  className={styles.hatchlingImg}
+                />
+                {!(clickCount > 0 && clickCount < 50) && (
+                  <p className={styles.hatchingText}>
+                    {clickCount === 0
+                      ? "Click on the egg to hatch."
+                      : clickCount > 49
+                      ? "Wait for the egg to hatch."
+                      : ""}
+                  </p>
+                )}
               </>
             ) : (
               <>
-                <img src="./adolescent.png" alt="Adolescent" className={styles.adolescentImg} onClick={()=> navigate("/chatbot")} />
-                <p className={styles.adolescentText} onClick={()=> navigate("/chatbot")}>Click to Interact with Volv</p>
+                <img
+                  src="./adolescent.png"
+                  alt="Adolescent"
+                  className={styles.adolescentImg}
+                  onClick={() => navigate("/chatbot")}
+                />
+                <p
+                  className={styles.adolescentText}
+                  onClick={() => navigate("/chatbot")}
+                >
+                  Click to Interact with Volv
+                </p>
               </>
             )}
-            {/* <img src="./egg.svg" alt="Egg" />
-            <p>Wait for the egg to hatch</p> */}
           </div>
 
           <div className={styles.rightPanel}>
@@ -602,7 +657,10 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase1cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase1cap, 100).toFixed(0) : Math.min((mCap * 100) / phase1cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase1cap, 100) % 1 === 0
+                      ? Math.min((mCap * 100) / phase1cap, 100).toFixed(0)
+                      : Math.min((mCap * 100) / phase1cap, 100).toFixed(1)}
+                    %
                   </div>
                 </div>
               </div>
@@ -634,7 +692,10 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase2cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase2cap, 100).toFixed(0) : Math.min((mCap * 100) / phase2cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase2cap, 100) % 1 === 0
+                      ? Math.min((mCap * 100) / phase2cap, 100).toFixed(0)
+                      : Math.min((mCap * 100) / phase2cap, 100).toFixed(1)}
+                    %
                   </div>
                 </div>
               </div>
@@ -664,7 +725,10 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase3cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase3cap, 100).toFixed(0) : Math.min((mCap * 100) / phase3cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase3cap, 100) % 1 === 0
+                      ? Math.min((mCap * 100) / phase3cap, 100).toFixed(0)
+                      : Math.min((mCap * 100) / phase3cap, 100).toFixed(1)}
+                    %
                   </div>
                 </div>
               </div>
@@ -694,7 +758,10 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase4cap, 100) % 1 === 0 ? Math.min((mCap * 100) / phase4cap, 100).toFixed(0) : Math.min((mCap * 100) / phase4cap, 100).toFixed(1)}%
+                    {Math.min((mCap * 100) / phase4cap, 100) % 1 === 0
+                      ? Math.min((mCap * 100) / phase4cap, 100).toFixed(0)
+                      : Math.min((mCap * 100) / phase4cap, 100).toFixed(1)}
+                    %
                   </div>
                 </div>
               </div>
@@ -717,7 +784,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {memoryCapacity.toFixed(1)}%
+                    {memoryCapacity.toFixed(memoryCapacity%1===0?0:1)}%
                   </div>
                 </div>
               </div>
@@ -736,7 +803,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {emotionalComplexity.toFixed(1)}%
+                    {emotionalComplexity.toFixed(emotionalComplexity%1===0?0:1)}%
                   </div>
                 </div>
               </div>
@@ -755,7 +822,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {adaptibility.toFixed(1)}%
+                    {adaptibility.toFixed(adaptibility%1===0?0:1)}%
                   </div>
                 </div>
               </div>
@@ -774,7 +841,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {empathyIndex.toFixed(1)}%
+                    {empathyIndex.toFixed(empathyIndex%1===0?0:1)}%
                   </div>
                 </div>
               </div>
@@ -793,7 +860,7 @@ function Home() {
                     ></div>
                   </div>
                   <div className={styles.progressPercentage}>
-                    {awareness.toFixed(1)}%
+                    {awareness.toFixed(awareness%1===0?0:1)}%
                   </div>
                 </div>
               </div>
