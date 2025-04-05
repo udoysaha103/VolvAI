@@ -43,7 +43,7 @@
   clear: both;
 }
 .row > img {
-  height: 50px;
+  height: 120px;
   width: auto;
   cursor: pointer;
   animation: levitate 3s ease-in-out infinite;

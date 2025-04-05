@@ -235,41 +235,21 @@
 
 .middlePanel{
     width: 45%;
-    /* height: 670px; */
-
-    /* background-image: url("./egg.svg");
-    background-size: 75%;
-    background-position: center;
-    background-repeat: no-repeat; */
+    height: 640px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    position: relative;
-
-    /* padding-top: 8%; */
 }
 
-.middlePanel img{
-    position: absolute;
-    width: 80%;
-    animation: levitate 1.5s infinite alternate ease-in-out;
-}
-.middlePanel img:hover{
-    animation: none;
-}
-@keyframes levitate {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-15px);
-    }
+.hatchlingImg{
+    /* position: absolute; */
+    height: 60%;
+    width: auto;
 }
 
-.middlePanel p{
+/* .middlePanel p{
     background-color: #000000;
     border-radius: 26px;
     border: 1px solid #c1ff72;
@@ -277,9 +257,35 @@
     padding: 35px 22px;
     font-size: 1.5em;
 
-    /* visibility: hidden; */
+    visibility: hidden;
     
     position: absolute;
+} */
+
+.adolescentImg{
+    width: 50%;
+    cursor: pointer;
+    clip-path: ellipse(70% 50% at 50% 50%);
+    animation: levitate 1.5s ease-in-out infinite alternate;
+}
+
+.adolescentText{
+    cursor: pointer;
+    font-size: 18px;
+    background-color: #000000;
+    border: 1px solid #c1ff72;
+    border-radius: 26px;
+    padding: 10px 20px;
+    margin-top: 3%;
+}
+
+@keyframes levitate {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
 }
 
 .rightPanel{
