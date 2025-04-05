@@ -1,9 +1,9 @@
 import styles from "./Navbar.module.css";
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar(props) {
   return (
-    <div className={styles.navWrapper}>
+    <div className={styles.navWrapper} {...props}>
       <div className={styles.contentWrapper}>
         <Link className={styles.leftItems} to="/">
           <div className={styles.logoIcon}>

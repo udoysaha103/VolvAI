@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aligned Chaotic Swarms with Buzzing Moving Sinusoidal Sphere</title>
+    <style>
+        :root{
+            --wave: 100px;
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #0a0a23, #000000);
+            overflow: hidden;
+        }
+
+        #sphereContainer {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            perspective: 800px; /* Adjusted for stronger 3D effect */
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Below swarms and bubble */
+        }
+
+        .swarmContainer {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 66.5%;
+            left: 66.5%;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            z-index: 2; /* Above vortex */
+        }
+
+        .swarmParticle {
+            width: 1px;
+            height: 1px;
+            background-color: #266EF6;
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 0 6px #266EF6;
+            opacity: 0.8;
+            transform-origin: 50% 50% 0;
+        }
+
+        .energyWave {
+            border: 1px solid #266EF6;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.7;
+            box-shadow: 0 0 15px #266EF6;
+            animation: waveExpand 6s infinite linear;
+            z-index: 3;
+        }
+
+        .energyWave:nth-child(2) {
+            animation-delay: 2s;
+        }
+        .energyWave:nth-child(3) {
+            animation-delay: 4s;
+        }
+
+        @keyframes waveExpand {
+            0% {
+                opacity: 0.7;
+                width: var(--wave);
+                height: var(--wave);
+            }
+            100% {
+                opacity: 0.1;
+                width: 600px;
+                height: 600px;
+            }
+        }
+
+        .energyBubble {
+            height: 100px;
+            width: 100px;
+            background: transparent;
+            border: 2px solid #266EF6;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) scaleZ(1);
+            transform-style: preserve-3d;
+            box-shadow: 0 0 5px #266EF6;
+            opacity: 0.3;
+            filter: url(#wave);
+           animation: buzzWave 0.2s infinite ease-in-out, rotateSphere 10s infinite linear; /* Combined animations */
+            z-index: 4;
+        }
+
+        @keyframes buzzWave {
+            0% {
+                filter: url(#wave) brightness(1) scale(5) baseFrequency(0.3);
+                transform: translate(-50%, -50%) rotateX(5deg) rotateY(5deg) scaleZ(1) translateZ(0px);
+                box-shadow: 0 0 5px #266EF6;
+                border-width: 2px;
+            }
+            50% {
+                filter: url(#wave) brightness(1.2) scale(8) baseFrequency(0.4);
+                transform: translate(-50%, -50%) rotateX(-5deg) rotateY(-5deg) scaleZ(1.05) translateZ(5px);
+                box-shadow: 0 0 10px #266EF6;
+                border-width: 3px;
+            }
+            100% {
+                filter: url(#wave) brightness(1) scale(5) baseFrequency(0.3);
+                transform: translate(-50%, -50%) rotateX(5deg) rotateY(5deg) scaleZ(1) translateZ(0px);
+                box-shadow: 0 0 5px #266EF6;
+                border-width: 2px;
+            }
+        }
+
+        @keyframes rotateSphere {
+            0% {
+                transform: translate(-50%, -50%) rotate3d(1, 1, 0, 0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate3d(1, 1, 0, 360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG for the wave filter -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="wave" x="-50%" y="-50%" width="200%" height="200%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="4" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div id="sphereContainer">
+        <canvas id="canvas"></canvas>
+        <div class="swarmContainer" id="swarm"></div>
+        <div class="energyWave"></div>
+        <div class="energyWave"></div>
+        <div class="energyWave"></div>
+        <div class="energyBubble"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+        // Three.js setup for chaotic vortex
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
+        renderer.setSize(300, 300);
+        camera.position.z = 50;
+
+        // Vortex particle system
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 100;
+        const positions = new Float32Array(particlesCount * 3);
+        const velocities = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+            const radius = 20 + Math.random() * 30;
+            const angle = Math.random() * Math.PI * 2;
+            positions[i] = radius * Math.cos(angle);
+            positions[i + 1] = radius * Math.sin(angle);
+            positions[i + 2] = (Math.random() - 0.5) * 20;
+            velocities[i] = (Math.random() - 0.5) * 0.1;
+            velocities[i + 1] = (Math.random() - 0.5) * 0.1;
+            velocities[i + 2] = (Math.random() - 0.5) * 0.1;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0x266EF6,
+            size: 0.5,
+            transparent: true,
+            opacity: 0.8
+        });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+
+        // Animation loop for vortex
+        function animateVortex() {
+            requestAnimationFrame(animateVortex);
+
+            for (let i = 0; i < particlesCount * 3; i += 3) {
+                positions[i] += velocities[i] + Math.sin(Date.now() * 0.001) * 0.2;
+                positions[i + 1] += velocities[i + 1] + Math.cos(Date.now() * 0.001) * 0.2;
+                positions[i + 2] += velocities[i + 2] + Math.sin(Date.now() * 0.002) * 0.1;
+
+                const radius = Math.sqrt(positions[i] * positions[i] + positions[i + 1] * positions[i + 1]);
+                if (radius > 50) {
+                    positions[i] *= 0.95;
+                    positions[i + 1] *= 0.95;
+                }
+            }
+            particlesGeometry.attributes.position.needsUpdate = true;
+
+            renderer.render(scene, camera);
+        }
+        animateVortex();
+
+        // JavaScript to create and animate the centered chaotic 3D swarm particles
+        const swarmContainer = document.getElementById('swarm');
+        const numParticles = 400;
+        const baseRadius = 40;
+
+        for (let i = 0; i < numParticles; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('swarmParticle');
+            swarmContainer.appendChild(particle);
+
+            // Random properties for chaotic motion
+            const speed = 0.02 + Math.random() * 0.03;
+            const noiseScale = 0.02 + Math.random() * 0.03;
+            const zSpeed = 0.01 + Math.random() * 0.02;
+            const offset = Math.random() * 2 * Math.PI;
+            const baseAngle = Math.random() * 2 * Math.PI;
+
+            function animateParticle() {
+                const time = Date.now() * speed;
+
+                const radius = baseRadius * (0.5 + 0.5 * Math.sin(time * noiseScale + offset));
+                const angle = baseAngle + time * speed + Math.cos(time * noiseScale + offset) * 0.5;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                const z = Math.sin(time * zSpeed + offset) * 20;
+
+                const currentRadius = Math.sqrt(x * x + y * y);
+                let finalX = x, finalY = y;
+                if (currentRadius > baseRadius) {
+                    const scale = baseRadius / currentRadius;
+                    finalX = x * scale;
+                    finalY = y * scale;
+                }
+
+                particle.style.transform = `translate3d(${finalX}px, ${finalY}px, ${z}px)`;
+                requestAnimationFrame(animateParticle);
+            }
+
+            animateParticle();
+        }
+    </script>
+</body>
+</html>

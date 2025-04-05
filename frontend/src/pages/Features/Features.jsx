@@ -11,7 +11,7 @@ const Features = () => {
       <Navbar />
       <div className={`${styles.content} content`}>
         <div className={styles.row}>
-          <img src="/hatching.svg" onClick={() => navigate('/chatbot')}/>
+          <img src="/hatching.png" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Hatchling: v0.1_Genesis</h1>
             <ul>
@@ -23,7 +23,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/adolescent.svg" onClick={() => navigate('/chatbot')}/>
+          <img src="/adolescent.png" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>
               Adolescent: v0.5_Quantum_Evolution
@@ -37,7 +37,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/mature.svg" onClick={() => navigate('/chatbot')}/>
+          <img src="/mature.png" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Mature: v0.8_Singularity</h1>
             <ul>
@@ -49,7 +49,7 @@ const Features = () => {
           </div>
         </div>
         <div className={styles.row}>
-          <img src="/adult.svg" onClick={() => navigate('/chatbot')}/>
+          <img src="/adult.png" onClick={() => navigate('/chatbot')}/>
           <div className={styles.text}>
             <h1 className={styles.header}>Adult: v1.0_OmniTrade_Volv AI</h1>
             <ul>

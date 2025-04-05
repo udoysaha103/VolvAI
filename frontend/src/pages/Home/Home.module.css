@@ -7,12 +7,6 @@
     width: 100%;
     padding-bottom: 200px;
     height: fit-content;
-
-    background-image: url('/hero_bg.gif');
-    background-size: 100%;
-    background-position: center top;
-    background-repeat: no-repeat;
-
     display: flex;
     justify-content: space-around;
     align-items: center;

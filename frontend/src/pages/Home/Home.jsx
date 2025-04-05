@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import Animation from "../../components/Animation/Animation";
 
 function Home() {
   const coinAddress = import.meta.env.VITE_COIN_ADDRESS;
@@ -11,7 +12,6 @@ function Home() {
   const phase2cap = 300000;
   const phase3cap = 1000000;
   const phase4cap = 3000000;
-
   const formatKMB = (num) => {
     if (num >= 1000000000) {
       return (
@@ -397,62 +397,59 @@ function Home() {
   // airPurity = random number between 70 and 95
   // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
   useEffect(() => {
-      setHatchProgress(Math.min((mCap * 100) / phase1cap, 100));
-      if (hatchProgress === 100) {
-        console.log("Hatch Progress is 100%");
-        setHatchingProbability(100);
-        setShellIntegrity(0);
-      } else {
-        setHatchingProbability(
-          Math.min(hatchProgress * Math.random() * 2 + 20, 100)
-        );
-        setShellIntegrity(
-          Math.min((100 - hatchingProbability) * Math.random() * 2 + 10, 100)
-        );
-      }
-      setDataFlow(103 + hatchingProbability * Math.random());
-      setOxygenFlow(0.58 + (hatchingProbability * Math.random() * 3) / 100);
-      setAmbientTemperature(Math.floor(Math.random() * (27 - 20 + 1)) + 20);
-      setEnergyLevel(
-        hatchProgress > 90
-          ? "High"
-          : ["Low", "Normal", "High"][Math.floor(Math.random() * 3)]
+    setHatchProgress(Math.min((mCap * 100) / phase1cap, 100));
+    if (hatchProgress === 100) {
+      console.log("Hatch Progress is 100%");
+      setHatchingProbability(100);
+      setShellIntegrity(0);
+    } else {
+      setHatchingProbability(
+        Math.min(hatchProgress * Math.random() * 2 + 20, 100)
       );
-      setAirPurity(Math.floor(Math.random() * (95 - 70 + 1)) + 70);
+      setShellIntegrity(
+        Math.min((100 - hatchingProbability) * Math.random() * 2 + 10, 100)
+      );
+    }
+    setDataFlow(103 + hatchingProbability * Math.random());
+    setOxygenFlow(0.58 + (hatchingProbability * Math.random() * 3) / 100);
+    setAmbientTemperature(Math.floor(Math.random() * (27 - 20 + 1)) + 20);
+    setEnergyLevel(
+      hatchProgress > 90
+        ? "High"
+        : ["Low", "Normal", "High"][Math.floor(Math.random() * 3)]
+    );
+    setAirPurity(Math.floor(Math.random() * (95 - 70 + 1)) + 70);
 
-      // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
-      setMemoryCapacity(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
-          100 +
-          30
-      );
-      setEmotionalComplexity(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
-          100 +
-          30
-      );
-      setAdaptibility(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
-          100 +
-          30
-      );
-      setEmpathyIndex(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
-          100 +
-          30
-      );
-      setAwareness(
-        (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) /
-          100 +
-          30
-      );
+    // memoryCapacity, emotionalComplexity, adaptibility, empathyIndex, awareness = hatchingProbability * Math.random() between 10 to 80
+    setMemoryCapacity(
+      (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) / 100 +
+        30
+    );
+    setEmotionalComplexity(
+      (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) / 100 +
+        30
+    );
+    setAdaptibility(
+      (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) / 100 +
+        30
+    );
+    setEmpathyIndex(
+      (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) / 100 +
+        30
+    );
+    setAwareness(
+      (hatchingProbability * Math.floor(Math.random() * (80 - 30 + 1))) / 100 +
+        30
+    );
   }, [mCap]);
 
+  
   return (
     <div>
-      <Navbar />
+      <Navbar style={{backgroundColor: "transparent"}}/>
 
       <div className={styles.homeWrapper}>
+        <Animation />
         <div className={styles.hero}>
           <div className={styles.leftPanel}>
             <div className={`${styles.box} ${styles.box1}`}>
@@ -469,7 +466,10 @@ function Home() {
                   )}
                 </div>
                 <div className={styles.hatchProgressValue}>
-                  {hatchProgress % 1 === 0 ? hatchProgress.toFixed(0) : hatchProgress.toFixed(1)}%
+                  {hatchProgress % 1 === 0
+                    ? hatchProgress.toFixed(0)
+                    : hatchProgress.toFixed(1)}
+                  %
                 </div>
               </div>
               <div className={styles.buySell}>
@@ -553,10 +553,10 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className={styles.middlePanel}>
+          {/* <div className={styles.middlePanel}>
             <img src="./0.png" alt="Egg" />
             <p>Wait for the egg to hatch</p>
-          </div>
+          </div> */}
           <div className={styles.rightPanel}>
             <div className={`${styles.box} ${styles.box3}`}>
               <h3>Evolution Phase</h3>
