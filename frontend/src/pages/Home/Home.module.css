@@ -1,5 +1,6 @@
 .homeWrapper{
     width: 100%;
+    font-size: 1vw;
 }
 
 .hero{
@@ -27,7 +28,6 @@
 
 .box{
     width: 95%;
-    height: 308px;
     background-color: #101010;
     border: 0.8px solid #fdfdc0;
     box-shadow: -5px -3px 5px #c1ff72;
@@ -36,7 +36,7 @@
 }
 
 .box h3{
-    font-size: 29px;
+    font-size: 1.81em;
     font-weight: 700;
     margin-bottom: 3%;
 }
@@ -72,7 +72,7 @@
 }
 
 .hatchProgressValue{
-    font-size: 20px;
+    font-size: 1.25em;
     font-weight: bold;
     position: absolute;
     margin-right: 1%;
@@ -89,7 +89,7 @@
 }
 
 .buySellText{
-    font-size: 16px;
+    font-size: 1em;
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -102,7 +102,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 0.875em;
     color: #ffffff;
     font-weight: 700;
     text-shadow: #333432 0px 0px 5px;
@@ -145,13 +145,13 @@
 }
 
 .statusName{
-    font-size: 18px;
+    font-size: 1.125em;
     color: #ffffff;
     vertical-align: middle;
 }
 
 .statusValue{
-    font-size: 24px;
+    font-size: 1.5em;
     font-weight: 700;
 }
 
@@ -172,12 +172,12 @@
 }
 
 .phaseStageName{
-    font-size: 20px;
+    font-size: 1.25em;
     color: #ffffff;
 }
 
 .phaseStageCap{
-    font-size: 12px;
+    font-size: 0.75em;
     color: #ffaf49;
 }
 
@@ -196,6 +196,7 @@
     justify-content: center;
     align-items: center;
     /* border: 0.8px solid #fdfdc0; */
+    overflow: hidden;   q
     border-radius: 5px;
     margin-top: 0.5%;
 }
@@ -216,7 +217,7 @@
 
 .phaseProgress .progressPercentage{
     font-weight: bold;
-    font-size: 12px;
+    font-size: 0.75em;
     display: flex;
     align-items: center;
 }
@@ -230,7 +231,7 @@
 }
 
 .traitName{
-    font-size: 19px;
+    font-size: 1.19em;
     color: #ffffff;
 }
 
@@ -280,7 +281,7 @@
     border: 1px solid #c1ff72;
     opacity: 0.8;
     padding: 35px 22px;
-    font-size: 24px;
+    font-size: 1.5em;
 
     /* visibility: hidden; */
     
@@ -296,7 +297,7 @@
 }
 
 .info{
-    font-size: 27.5px;
+    font-size: 1.72em;
     text-align: justify;
     width: 90%;
     margin: 0 auto;
@@ -345,7 +346,7 @@
 .digital_rain span {
     position: absolute;
     color: #c1ff72;
-    font-size: 14px;
+    font-size: 0.875em;
     animation: rainDrop 3s linear infinite;
 }
 
