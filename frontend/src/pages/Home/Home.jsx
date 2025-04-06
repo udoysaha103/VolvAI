@@ -1,7 +1,7 @@
 import styles from "./Home.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Animation from "../../components/Animation/Animation";
 
@@ -54,7 +54,6 @@ function Home() {
   };
 
   const navigate = useNavigate();
-  const clickCountRef = useRef(0);
 
   const canvasRef = useRef(null);
 
@@ -355,7 +354,6 @@ function Home() {
       );
     } catch (error) {
       console.error("Error fetching coin data:", error);
-      setError(error);
     }
   };
 
