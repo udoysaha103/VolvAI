@@ -342,39 +342,32 @@ function Home() {
   const apiUrl = `https://api.dexscreener.com/token-pairs/v1/solana/${coinAddress}`;
 
   const [hatchProgress, setHatchProgress] = useState(50);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      setBuys(data[0].txns.h1.buys);
+      setSells(data[0].txns.h1.sells);
+      setPairCreatedAt(data[0].pairCreatedAt);
+      setMCap(data[0].marketCap);
+      setHatchProgress(
+        Math.min((data[0].marketCap * 100) / phase1cap, 100)
+      );
+    } catch (error) {
+      console.error("Error fetching coin data:", error);
+      setError(error);
+    }
+  };
+
 
   useEffect(() => {
     if (hash) {
       const element = document.querySelector(hash);
       element.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    const interval = setInterval(() => {
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          setBuys(data[0].txns.h1.buys);
-          setSells(data[0].txns.h1.sells);
-          setMCap(data[0].marketCap);
-          setPairCreatedAt(data[0].pairCreatedAt);
-          setHatchProgress(
-            Math.min((data[0].marketCap * 100) / phase1cap, 100)
-          );
-        })
-        .catch((error) => console.error("Error fetching coin data:", error));
-    }, 3000);
-
+    const interval = setInterval(fetchData, 3000);
     // fetch once immediately
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        setBuys(data[0].txns.h1.buys);
-        setSells(data[0].txns.h1.sells);
-        setMCap(data[0].marketCap);
-        setPairCreatedAt(data[0].pairCreatedAt);
-        setHatchProgress(Math.min((data[0].marketCap * 100) / phase1cap, 100));
-      })
-      .catch((error) => console.error("Error fetching coin data:", error));
-
+    fetchData();
     return () => clearInterval(interval); // Clear the interval on component unmount
   }, []);
 

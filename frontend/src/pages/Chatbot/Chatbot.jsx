@@ -49,12 +49,11 @@ const Chatbot = () => {
 
   const apiUrl = `https://api.dexscreener.com/token-pairs/v1/solana/${coinAddress}`;
 
-  const handleSendMessage = (event) => {
-    event.preventDefault(); // Prevent default form submission
+  const handleSendMessage = () => {
     const message = inputRef.current.value;
     inputRef.current.value = ""; // Clear the input field
     console.log(message);
-    console.log(threadId);
+    console.log(threadId, "handleSendMessage");
 
     if (!message || sending) return;
     setSending(true);
@@ -93,99 +92,56 @@ const Chatbot = () => {
         setSending(false);
       });
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          setMCap(data[0].marketCap);
-        })
-        .catch((error) => {
-          console.error("Error fetching coin data:", error);
-          setError(error);
-        });
-    }, 3000);
-    // const handleKeyDown = (event) => {
-    //   if (event.key === "Enter") {
-    //     handleSendMessage(event);
-    //   }
-    // };
-    // window.addEventListener("keydown", handleKeyDown);
-    // fetch once immediately
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        setMCap(data[0].marketCap);
-      })
-      .catch((error) => {
-        console.error("Error fetching coin data:", error);
-        setError(error);
-      });
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      console.log(threadId, "handleKeyDown");
+      handleSendMessage();
+    }
+  };
+  const fetchCoinData = async () => {
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      setMCap(data[0].marketCap);
+    } catch (error) {
+      console.error("Error fetching coin data:", error);
+      setError(error);
+    }
+  };
+  const fetchThreadId = async () => {
     if (!chats.length) {
-      fetch(`${import.meta.env.VITE_API_URL}/create-thread`, {
-        method: "POST",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setThreadId(data.threadId);
-          localStorage.setItem("threadId", data.threadId);
-          setChats([
-            { role: "assistant", text: "Hello! How can I assist you today?" },
-          ]);
-        })
-        .catch((error) => {
-          console.error("Error creating thread:", error);
-          setError(error);
-        });
-    } 
-    // if (!localStorage.getItem("threadId")) {
-    //   fetch(`${import.meta.env.VITE_API_URL}/create-thread`, {
-    //     method: "POST",
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       setThreadId(data.threadId);
-    //       localStorage.setItem("threadId", data.threadId);
-    //       setChats([
-    //         { role: "assistant", text: "Hello! How can I assist you today?" },
-    //       ]);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error creating thread:", error);
-    //       setError(error);
-    //     });
-    // } else {
-    // fetch(
-    //   `${
-    //     import.meta.env.VITE_API_URL
-    //   }/get-messages?threadId=${localStorage.getItem("threadId")}`
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setThreadId(localStorage.getItem("threadId"));
-    //     setChats([
-    //       { role: "assistant", text: "Hello! How can I assist you today?" },
-    //       ...data.messages
-    //         .map((message) =>
-    //           message.content.map((e) => ({
-    //             role: message.role,
-    //             text: e.value,
-    //           }))
-    //         )
-    //         .flat()]
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching messages:", error);
-    //     setError(error);
-    //   });
-    // }
-
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/create-thread`,
+          {
+            method: "POST",
+          }
+        );
+        const data = await response.json();
+        setThreadId(data.threadId);
+        setChats([
+          { role: "assistant", text: "Hello! How can I assist you today?" },
+        ]);
+      } catch (error) {
+        console.error("Error creating thread:", error);
+        setError(error);
+      }
+    }
+  };
+  useEffect(() => {
+    const interval = setInterval(fetchCoinData, 3000);
+    fetchCoinData();
+    fetchThreadId();
     return () => {
       clearInterval(interval);
-      // window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [threadId]);
 
   useEffect(() => {
     if (mCap >= phase1cap) {
