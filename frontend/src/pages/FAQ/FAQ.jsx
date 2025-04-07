@@ -30,9 +30,8 @@ const FAQ = () => {
   }, []);
   document.title = "FAQ | Volv AI";
   return (
-    <div className={styles.container}>
-      <Navbar />
-      <div className={`${styles.content} content`}>
+      <div className={`${styles.container} container`}>
+        <Navbar />
         <div className={styles.contentBox}>
           <h1 className={styles.header}>FAQ</h1>
           {content.map((item, index) => (
@@ -44,7 +43,6 @@ const FAQ = () => {
         </div>
         <Footer />
       </div>
-    </div>
   );
 };
 

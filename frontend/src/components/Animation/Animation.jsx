@@ -1,162 +1,270 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import styles from "./Animation.module.css";
-import * as THREE from "three";
+import { useEffect, useRef } from "react";
 
 const Animation = () => {
   const canvasRef = useRef(null);
-  const swarmContainerRef = useRef(null);
-  // const swarmContainerRef = useRef(null);
   useEffect(() => {
-    // Three.js setup for chaotic vortex
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      alpha: true,
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.position.z = 50;
+    const nCanvasRender = canvasRef.current;
+    const fnRequestAnimationFrame = (fnCallback) => {
+      const fnAnimFrame =
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        ((fnCallback) => {
+          window.setTimeout(fnCallback, 1000 / 60);
+        });
+      fnAnimFrame(fnCallback);
+    };
+    // Add Event Listener
+    const fnAddEventListener = (o, sEvent, fn) => {
+      if (o.addEventListener) {
+        o.addEventListener(sEvent, fn, false);
+      } else {
+        o["on" + sEvent] = fn;
+      }
+    };
+    // General Elements
+    const oDoc = document;
+    const nBody = oDoc.body;
+    // Shortcuts
+    const fPI = Math.PI;
+    const fnMax = Math.max;
+    const fnMin = Math.min;
+    const fnRnd = Math.random;
+    const fnRnd2 = () => 2.0 * fnRnd() - 1.0;
+    const fnCos = Math.cos;
+    const fnACos = Math.acos;
+    const fnSin = Math.sin;
+    // Sphere Settings
+    let iRadiusSphere = 180;
+    let iProjSphereX = 0;
+    let iProjSphereY = 0;
+    // Particle Settings
+    const fMaxAX = 0.1;
+    const fMaxAY = 0.1;
+    const fMaxAZ = 0.1;
+    const fStartVX = 0.01;
+    const fStartVY = 0.01;
+    const fStartVZ = 0.01;
+    let fAngle = 0.0;
+    let fSinAngle = 0.0;
+    let fCosAngle = 0.0;
 
-    // Vortex particle system
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 200;
-    const positions = new Float32Array(particlesCount * 3);
-    const velocities = new Float32Array(particlesCount * 3);
+    window.iFramesToRotate = 2000.0;
+    window.iPerspective = 250;
+    window.iNewParticlePerFrame = 10;
+    window.fGrowDuration = 200.0;
+    window.fWaitDuration = 10.0;
+    window.fShrinkDuration = 250.0;
+    window.aColor = [193, 255, 114];
 
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-      const radius = 20 + Math.random() * 30;
-      const angle = Math.random() * Math.PI * 2;
-      positions[i] = radius * Math.cos(angle);
-      positions[i + 1] = radius * Math.sin(angle);
-      positions[i + 2] = (Math.random() - 0.5) * 20;
-      velocities[i] = (Math.random() - 0.5) * 0.1;
-      velocities[i + 1] = (Math.random() - 0.5) * 0.1;
-      velocities[i + 2] = (Math.random() - 0.5) * 0.1;
-    }
+    let fVX = (2.0 * fPI) / window.iFramesToRotate;
 
-    particlesGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(positions, 3)
-    );
-    const particlesMaterial = new THREE.PointsMaterial({
-      color: 0x266ef6,
-      size: 0.5,
-      transparent: true,
-      opacity: 0.8,
-    });
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
+    let oRadGrad = null;
+    const ctxRender = nCanvasRender.getContext("2d");
 
-    // Animation loop for vortex
-    let animationId1;
-    let animationId2;
-    function animateVortex() {
-      animationId1 = requestAnimationFrame(animateVortex);
+    const oRender = { pFirst: null };
+    const oBuffer = { pFirst: null };
 
-      for (let i = 0; i < particlesCount * 3; i += 3) {
-        positions[i] += velocities[i] + Math.sin(Date.now() * 0.001) * 0.2;
-        positions[i + 1] +=
-          velocities[i + 1] + Math.cos(Date.now() * 0.001) * 0.2;
-        positions[i + 2] +=
-          velocities[i + 2] + Math.sin(Date.now() * 0.002) * 0.1;
+    let w = 0;
+    let h = 0;
 
-        const radius = Math.sqrt(
-          positions[i] * positions[i] + positions[i + 1] * positions[i + 1]
+    // gets/sets size
+    const fnSetSize = () => {
+      nCanvasRender.width = w = window.innerWidth;
+      nCanvasRender.height = h = window.innerHeight;
+      iProjSphereX = w / 2;
+      iProjSphereY = h / 2 - 100;
+      return { w: w, h: h };
+    };
+    const fnSwapList = (p, oSrc, oDst) => {
+      if (p) {
+        // remove p from oSrc
+        if (oSrc.pFirst === p) {
+          oSrc.pFirst = p.pNext;
+          if (p.pNext) p.pNext.pPrev = null;
+        } else {
+          p.pPrev.pNext = p.pNext;
+          if (p.pNext) p.pNext.pPrev = p.pPrev;
+        }
+      } else {
+        // create new p
+        p = new Particle();
+      }
+
+      p.pNext = oDst.pFirst;
+      if (oDst.pFirst) oDst.pFirst.pPrev = p;
+      oDst.pFirst = p;
+      p.pPrev = null;
+      return p;
+    };
+    class Particle {
+      constructor() {
+        // Current Position
+        this.fX = 0.0;
+        this.fY = 0.0;
+        this.fZ = 0.0;
+        // Current Velocity
+        this.fVX = 0.0;
+        this.fVY = 0.0;
+        this.fVZ = 0.0;
+        // Current Acceleration
+        this.fAX = 0.0;
+        this.fAY = 0.0;
+        this.fAZ = 0.0;
+        // Projection Position
+        this.fProjX = 0.0;
+        this.fProjY = 0.0;
+        // Rotation
+        this.fRotX = 0.0;
+        this.fRotZ = 0.0;
+        // double linked list
+        this.pPrev = null;
+        this.pNext = null;
+
+        this.fAngle = 0.0;
+        this.fForce = 0.0;
+
+        this.fGrowDuration = 0.0;
+        this.fWaitDuration = 0.0;
+        this.fShrinkDuration = 0.0;
+
+        this.fRadiusCurrent = 0.0;
+
+        this.iFramesAlive = 0;
+        this.bIsDead = false;
+      }
+
+      fnInit() {
+        this.fAngle = fnRnd() * fPI * 2;
+        this.fForce = fnACos(fnRnd2());
+        this.fAlpha = 0;
+        this.bIsDead = false;
+        this.iFramesAlive = 0;
+        this.fX = iRadiusSphere * fnSin(this.fForce) * fnCos(this.fAngle);
+        this.fY = iRadiusSphere * fnSin(this.fForce) * fnSin(this.fAngle);
+        this.fZ = iRadiusSphere * fnCos(this.fForce);
+        this.fVX = fStartVX * this.fX;
+        this.fVY = fStartVY * this.fY;
+        this.fVZ = fStartVZ * this.fZ;
+        this.fGrowDuration =
+          window.fGrowDuration + fnRnd2() * (window.fGrowDuration / 4.0);
+        this.fWaitDuration =
+          window.fWaitDuration + fnRnd2() * (window.fWaitDuration / 4.0);
+        this.fShrinkDuration =
+          window.fShrinkDuration + fnRnd2() * (window.fShrinkDuration / 4.0);
+        this.fAX = 0.0;
+        this.fAY = 0.0;
+        this.fAZ = 0.0;
+      }
+
+      fnUpdate() {
+        if (this.iFramesAlive > this.fGrowDuration + this.fWaitDuration) {
+          this.fVX += this.fAX + fMaxAX * fnRnd2();
+          this.fVY += this.fAY + fMaxAY * fnRnd2();
+          this.fVZ += this.fAZ + fMaxAZ * fnRnd2();
+          this.fX += this.fVX;
+          this.fY += this.fVY;
+          this.fZ += this.fVZ;
+        }
+
+        this.fRotX = fCosAngle * this.fX + fSinAngle * this.fZ;
+        this.fRotZ = -fSinAngle * this.fX + fCosAngle * this.fZ;
+        this.fRadiusCurrent = Math.max(
+          0.01,
+          window.iPerspective / (window.iPerspective - this.fRotZ)
         );
-        if (radius > 50) {
-          positions[i] *= 0.95;
-          positions[i + 1] *= 0.95;
-        }
-      }
-      particlesGeometry.attributes.position.needsUpdate = true;
+        this.fProjX = this.fRotX * this.fRadiusCurrent + iProjSphereX;
+        this.fProjY = this.fY * this.fRadiusCurrent + iProjSphereY;
 
-      renderer.render(scene, camera);
+        this.iFramesAlive += 1;
+
+        if (this.iFramesAlive < this.fGrowDuration) {
+          this.fAlpha = (this.iFramesAlive * 1.0) / this.fGrowDuration;
+        } else if (
+          this.iFramesAlive <
+          this.fGrowDuration + this.fWaitDuration
+        ) {
+          this.fAlpha = 1.0;
+        } else if (
+          this.iFramesAlive <
+          this.fGrowDuration + this.fWaitDuration + this.fShrinkDuration
+        ) {
+          this.fAlpha =
+            ((this.fGrowDuration +
+              this.fWaitDuration +
+              this.fShrinkDuration -
+              this.iFramesAlive) *
+              1.0) /
+            this.fShrinkDuration;
+        } else {
+          this.bIsDead = true;
+        }
+
+        if (this.bIsDead === true) {
+          fnSwapList(this, oRender, oBuffer);
+        }
+
+        this.fAlpha *= fnMin(1.0, fnMax(0.5, this.fRotZ / iRadiusSphere));
+        this.fAlpha = fnMin(1.0, fnMax(0.0, this.fAlpha));
+      }
     }
-    animateVortex();
-    // JavaScript to create and animate the centered chaotic 3D swarm particles
-    const numParticles = 100;
-    const baseRadius = 40;
+    const fnRender = () => {
+      ctxRender.fillStyle = "#000";
+      ctxRender.fillRect(0, 0, w, h);
 
-    for (let i = 0; i < numParticles; i++) {
-      const particle = document.createElement("div");
-      particle.classList.add(styles.swarmParticle);
-      swarmContainerRef.current.appendChild(particle);
+      let p = oRender.pFirst;
+      let iCount = 0;
+      while (p) {
+        ctxRender.fillStyle = `rgba(${window.aColor.join(
+          ","
+        )},${p.fAlpha.toFixed(4)})`;
+        ctxRender.beginPath();
+        ctxRender.arc(p.fProjX, p.fProjY, p.fRadiusCurrent, 0, 2 * fPI, false);
+        ctxRender.closePath();
+        ctxRender.fill();
+        p = p.pNext;
+        iCount += 1;
+      }
+    };
 
-      // Random properties for chaotic motion
-      const speed = 0.02 + Math.random() * 0.03;
-      const noiseScale = 0.02 + Math.random() * 0.03;
-      const zSpeed = 0.01 + Math.random() * 0.02;
-      const offset = Math.random() * 2 * Math.PI;
-      const baseAngle = Math.random() * 2 * Math.PI;
+    const fnNextFrame = () => {
+      fAngle = (fAngle + fVX) % (2.0 * fPI);
+      fSinAngle = fnSin(fAngle);
+      fCosAngle = fnCos(fAngle);
 
-      function animateParticle() {
-        animationId2 = requestAnimationFrame(animateParticle);
-        const time = Date.now() * speed;
-
-        const radius =
-          baseRadius * (0.5 + 0.5 * Math.sin(time * noiseScale + offset));
-        const angle =
-          baseAngle + time * speed + Math.cos(time * noiseScale + offset) * 0.5;
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle);
-        const z = Math.sin(time * zSpeed + offset) * 20;
-
-        const currentRadius = Math.sqrt(x * x + y * y);
-        let finalX = x,
-          finalY = y;
-        if (currentRadius > baseRadius) {
-          const scale = baseRadius / currentRadius;
-          finalX = x * scale;
-          finalY = y * scale;
-        }
-
-        particle.style.transform = `translate3d(${finalX+swarmContainerRef.current?.offsetWidth/2}px, ${finalY+swarmContainerRef.current?.offsetHeight/2}px, ${z}px)`;
+      let iAddParticle = 0;
+      let iCount = 0;
+      while (iAddParticle++ < window.iNewParticlePerFrame) {
+        const p = fnSwapList(oBuffer.pFirst, oBuffer, oRender);
+        p.fnInit();
       }
 
-      animateParticle();
+      let p = oRender.pFirst;
+      while (p) {
+        const pNext = p.pNext;
+        p.fnUpdate();
+        p = pNext;
+        iCount++;
+      }
+      fnRender();
+
+      fnRequestAnimationFrame(() => fnNextFrame());
+    };
+    fnSetSize();
+    fnAddEventListener(window, "resize", fnSetSize);
+    fnNextFrame();
+    if (window.innerWidth < 1000) {
+      window.iNewParticlePerFrame = 5;
     }
     return () => {
-        cancelAnimationFrame(animationId1);
-        cancelAnimationFrame(animationId2);
-        renderer.dispose(); // Dispose of the renderer
-        particlesGeometry.dispose(); // Dispose of the geometry
-        particlesMaterial.dispose(); // Dispose of the material
-        scene.remove(particles); // Remove particles from the scene
-    }
+      window.removeEventListener("resize", fnSetSize);
+    };
   }, []);
-  return (
-    <div className={styles.animationContainer}>
-      {/* <svg style="position: absolute; width: 0; height: 0;"> */}
-      <svg style={{ position: "absolute", width: 0, height: 0 }}>
-        <defs>
-          <filter id="wave" x="-50%" y="-50%" width="200%" height="200%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.3"
-              numOctaves="4"
-              result="noise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="5"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-
-      <div className={styles.sphereContainer}>
-        <canvas ref={canvasRef} className={styles.vortex}></canvas>
-        <div className={styles.swarmContainer} ref={swarmContainerRef}></div>
-        <div className={styles.energyWave}></div>
-        <div className={styles.energyWave}></div>
-        <div className={styles.energyWave}></div>
-        <div className={styles.energyBubble}></div>
-      </div>
-    </div>
-  );
+  return <canvas ref={canvasRef} className={styles.canvas} />; // Add the canvas element
 };
 
 export default Animation;

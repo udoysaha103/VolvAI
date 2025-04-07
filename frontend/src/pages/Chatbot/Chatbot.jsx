@@ -152,55 +152,50 @@ const Chatbot = () => {
   }, [mCap]);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} container`}>
       <Navbar />
-      <div className={`${styles.content} content`}>
-        {isDisabled && (
-          <div className={styles.info}>
-            Wait for hatching procedure to complete.....
-          </div>
-        )}
-        <div className={styles.chatbox}>
-          {!isDisabled && (
-            <>
-              <div className={styles.chatContainer}>
-                {chats.map((chat, index) => (
-                  <div key={index} className={styles.chatMessage}>
-                    {chat.role === "assistant" && (
-                      <div className={styles.botMessage}>
-                        <img src="/bot.svg" className={styles.botIcon} />
-                        <div className={styles.botText}>
-                          <ReactMarkDown>{chat.text}</ReactMarkDown>
-                        </div>
-                      </div>
-                    )}
-                    {chat.role === "user" && (
-                      <div className={styles.userMessage}>
-                        <div className={styles.userText}>{chat.text}</div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className={styles.chatInputContainer}>
-                <input
-                  type="text"
-                  placeholder="Start Asking............."
-                  ref={inputRef}
-                  className={styles.chatInput}
-                />
-                <button
-                  className={styles.sendButton}
-                  onClick={handleSendMessage}
-                >
-                  {sending ? "Sending..." : "Send"}
-                </button>
-              </div>
-            </>
-          )}
+      {isDisabled && (
+        <div className={styles.info}>
+          Wait for hatching procedure to complete.....
         </div>
-        <Footer />
+      )}
+      <div className={styles.chatbox}>
+        {!isDisabled && (
+          <>
+            <div className={styles.chatContainer}>
+              {chats.map((chat, index) => (
+                <div key={index} className={styles.chatMessage}>
+                  {chat.role === "assistant" && (
+                    <div className={styles.botMessage}>
+                      <img src="/bot.svg" className={styles.botIcon} />
+                      <div className={styles.botText}>
+                        <ReactMarkDown>{chat.text}</ReactMarkDown>
+                      </div>
+                    </div>
+                  )}
+                  {chat.role === "user" && (
+                    <div className={styles.userMessage}>
+                      <div className={styles.userText}>{chat.text}</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className={styles.chatInputContainer}>
+              <input
+                type="text"
+                placeholder="Start Asking............."
+                ref={inputRef}
+                className={styles.chatInput}
+              />
+              <button className={styles.sendButton} onClick={handleSendMessage}>
+                {sending ? "Sending..." : "Send"}
+              </button>
+            </div>
+          </>
+        )}
       </div>
+      <Footer />
     </div>
   );
 };

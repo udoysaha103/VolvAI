@@ -49,8 +49,9 @@ function Home() {
   const formatAge = (timestamp) => {
     const now = Date.now();
     const age = now - timestamp; //in milliseconds
-    const days = Math.floor(age / 86400000);
-    return days;
+    const hours = Math.floor(age / (3600000));
+    const minutes = Math.floor((age % (3600000)) / 60000);
+    return `${hours+1}h ${minutes+1}m`;
   };
 
   const navigate = useNavigate();
@@ -349,14 +350,11 @@ function Home() {
       setSells(data[0].txns.h1.sells);
       setPairCreatedAt(data[0].pairCreatedAt);
       setMCap(data[0].marketCap);
-      setHatchProgress(
-        Math.min((data[0].marketCap * 100) / phase1cap, 100)
-      );
+      setHatchProgress(Math.min((data[0].marketCap * 100) / phase1cap, 100));
     } catch (error) {
       console.error("Error fetching coin data:", error);
     }
   };
-
 
   useEffect(() => {
     if (hash) {
@@ -454,453 +452,469 @@ function Home() {
       <Navbar />
 
       <div className={styles.homeWrapper}>
-        <Animation />
-        <div className={styles.hero}>
-          <div className={styles.leftPanel}>
-            <div className={`${styles.box} ${styles.box1}`}>
-              <h3>Hatch Progress</h3>
-              <div className={styles.hatchProgress}>
-                <div className={styles.hatchProgressBar}>
-                  {Array.from({ length: Math.floor(hatchProgress / 4) }).map(
-                    (_, index) => (
-                      <div
-                        key={index}
-                        className={styles.hatchProgressSegment}
-                      ></div>
-                    )
+        <div className={styles.heroWrapper}>
+          <Animation />
+          <div className={styles.hero}>
+            <div className={styles.leftPanel}>
+              <div className={`${styles.box} ${styles.box1}`}>
+                <h3>Hatch Progress</h3>
+                <div className={styles.hatchProgress}>
+                  <div className={styles.hatchProgressBar}>
+                    {Array.from({ length: Math.floor(hatchProgress / 4) }).map(
+                      (_, index) => (
+                        <div
+                          key={index}
+                          className={styles.hatchProgressSegment}
+                        ></div>
+                      )
+                    )}
+                  </div>
+                  <div className={styles.hatchProgressValue}>
+                    {hatchProgress % 1 === 0
+                      ? hatchProgress.toFixed(0)
+                      : hatchProgress.toFixed(1)}
+                    %
+                  </div>
+                </div>
+                <div className={styles.buySell}>
+                  <div className={styles.buySellText}>Buys</div>
+                  <div className={styles.buySellChart}>
+                    <div
+                      className={styles.buyValue}
+                      style={{ width: `${(buys * 100) / (buys + sells)}%` }}
+                    >
+                      {buys}
+                    </div>
+                    <div
+                      className={styles.sellValue}
+                      style={{ width: `${(sells * 100) / (buys + sells)}%` }}
+                    >
+                      {sells}
+                    </div>
+                  </div>
+                  <div className={styles.buySellText}>Sells</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Mcap</div>
+                  <div className={styles.statusValue}>{formatKMB(mCap)}</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Data Flow</div>
+                  <div className={styles.statusValue}>
+                    {dataFlow.toFixed(dataFlow % 1 === 0 ? 0 : 1)} GB
+                  </div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Oxygen Flow</div>
+                  <div className={styles.statusValue}>
+                    {oxygenFlow.toFixed(oxygenFlow % 1 === 0 ? 0 : 1)} LPM
+                  </div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Shell Integrity</div>
+                  <div className={styles.statusValue}>
+                    {shellIntegrity.toFixed(shellIntegrity % 1 === 0 ? 0 : 1)} %
+                  </div>
+                </div>
+              </div>
+
+              <div className={`${styles.box} ${styles.box2}`}>
+                <h3>Embryo Status</h3>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Time Active</div>
+                  <div className={styles.statusValue}>
+                    {formatAge(pairCreatedAt)}
+                  </div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Hatching Probability</div>
+                  <div className={styles.statusValue}>
+                    {hatchingProbability.toFixed(
+                      hatchingProbability % 1 === 0 ? 0 : 1
+                    )}{" "}
+                    %
+                  </div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Ambient Temperature</div>
+                  <div className={styles.statusValue}>
+                    {ambientTemperature} ° C
+                  </div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Energy Levels</div>
+                  <div className={styles.statusValue}>{energyLevel}</div>
+                </div>
+
+                <div className={styles.status}>
+                  <div className={styles.statusName}>Air Purity</div>
+                  <div className={styles.statusValue}>{airPurity} %</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.middlePanel}>
+              {hatchProgress < 100 ? (
+                <>
+                  <img
+                    ref={hatchlingRef}
+                    src={
+                      clickCount < 2
+                        ? "0.png"
+                        : clickCount < 6
+                        ? "2.png"
+                        : clickCount < 12
+                        ? "6.png"
+                        : clickCount < 20
+                        ? "12.png"
+                        : clickCount < 26
+                        ? "20.png"
+                        : clickCount < 32
+                        ? "26.png"
+                        : clickCount < 40
+                        ? "32.png"
+                        : clickCount < 50
+                        ? "40.png"
+                        : "50.png"
+                    }
+                    alt="Hatchling"
+                    onClick={() => {
+                      setClickCount(clickCount + 1);
+                      handleClick();
+                    }}
+                    className={styles.hatchlingImg}
+                  />
+                  {!(clickCount > 0 && clickCount < 50) && (
+                    <p className={styles.hatchingText} onClick = {
+                      () => {
+                        if(clickCount > 49){
+                          navigate('/chatbot')
+                          console.log("50 click")
+                        }
+                      }
+                    }>
+                      {clickCount === 0
+                        ? "Click on the egg to hatch."
+                        : clickCount > 49
+                        ? "Wait for the egg to hatch."
+                        : ""}
+                    </p>
                   )}
-                </div>
-                <div className={styles.hatchProgressValue}>
-                  {hatchProgress % 1 === 0
-                    ? hatchProgress.toFixed(0)
-                    : hatchProgress.toFixed(1)}
-                  %
-                </div>
-              </div>
-              <div className={styles.buySell}>
-                <div className={styles.buySellText}>Buys</div>
-                <div className={styles.buySellChart}>
-                  <div
-                    className={styles.buyValue}
-                    style={{ width: `${(buys * 100) / (buys + sells)}%` }}
+                </>
+              ) : (
+                <>
+                  <img
+                    src="./adolescent.png"
+                    alt="Adolescent"
+                    className={styles.adolescentImg}
+                    onClick={() => navigate("/chatbot")}
+                  />
+                  <p
+                    className={styles.adolescentText}
+                    onClick={() => navigate("/chatbot")}
                   >
-                    {buys}
-                  </div>
-                  <div
-                    className={styles.sellValue}
-                    style={{ width: `${(sells * 100) / (buys + sells)}%` }}
-                  >
-                    {sells}
-                  </div>
-                </div>
-                <div className={styles.buySellText}>Sells</div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Mcap</div>
-                <div className={styles.statusValue}>{formatKMB(mCap)}</div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Data Flow</div>
-                <div className={styles.statusValue}>
-                  {dataFlow.toFixed(dataFlow%1===0?0:1)} GB
-                </div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Oxygen Flow</div>
-                <div className={styles.statusValue}>
-                  {oxygenFlow.toFixed(oxygenFlow%1===0?0:1)} LPM
-                </div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Shell Integrity</div>
-                <div className={styles.statusValue}>
-                  {shellIntegrity.toFixed(shellIntegrity%1===0?0:1)} %
-                </div>
-              </div>
-            </div>
-
-            <div className={`${styles.box} ${styles.box2}`}>
-              <h3>Embryo Status</h3>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Days Active</div>
-                <div className={styles.statusValue}>
-                  {formatAge(pairCreatedAt) + 1}
-                </div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Hatching Probability</div>
-                <div className={styles.statusValue}>
-                  {hatchingProbability.toFixed(hatchingProbability%1===0?0:1)} %
-                </div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Ambient Temperature</div>
-                <div className={styles.statusValue}>
-                  {ambientTemperature} ° C
-                </div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Energy Levels</div>
-                <div className={styles.statusValue}>{energyLevel}</div>
-              </div>
-
-              <div className={styles.status}>
-                <div className={styles.statusName}>Air Purity</div>
-                <div className={styles.statusValue}>{airPurity} %</div>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.middlePanel}>
-            {hatchProgress < 100 ? (
-              <>
-                <img
-                  ref={hatchlingRef}
-                  src={
-                    clickCount < 2
-                      ? "0.png"
-                      : clickCount < 6
-                      ? "2.png"
-                      : clickCount < 12
-                      ? "6.png"
-                      : clickCount < 20
-                      ? "12.png"
-                      : clickCount < 26
-                      ? "20.png"
-                      : clickCount < 32
-                      ? "26.png"
-                      : clickCount < 40
-                      ? "32.png"
-                      : clickCount < 50
-                      ? "40.png"
-                      : "50.png"
-                  }
-                  alt="Hatchling"
-                  onClick={() => {
-                    setClickCount(clickCount + 1);
-                    handleClick();
-                  }}
-                  className={styles.hatchlingImg}
-                />
-                {!(clickCount > 0 && clickCount < 50) && (
-                  <p className={styles.hatchingText}>
-                    {clickCount === 0
-                      ? "Click on the egg to hatch."
-                      : clickCount > 49
-                      ? "Wait for the egg to hatch."
-                      : ""}
+                    Click to Interact with Volv
                   </p>
-                )}
-              </>
-            ) : (
-              <>
-                <img
-                  src="./adolescent.png"
-                  alt="Adolescent"
-                  className={styles.adolescentImg}
-                  onClick={() => navigate("/chatbot")}
-                />
-                <p
-                  className={styles.adolescentText}
-                  onClick={() => navigate("/chatbot")}
-                >
-                  Click to Interact with Volv
-                </p>
-              </>
-            )}
-          </div>
-
-          <div className={styles.rightPanel}>
-            <div className={`${styles.box} ${styles.box3}`}>
-              <h3>Evolution Phase</h3>
-              <div className={styles.phase}>
-                <div className={styles.phaseStage}>
-                  <div className={styles.phaseStageName}>
-                    Phase 1 : Hatchling
-                  </div>
-                  <div className={styles.phaseStageCap}>
-                    Marekt Cap: {formatKMB(phase1cap)}
-                  </div>
-                </div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{
-                        width: `${Math.min((mCap * 100) / phase1cap, 100)}%`,
-                      }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{
-                        width: `${
-                          100 - Math.min((mCap * 100) / phase1cap, 100)
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase1cap, 100) % 1 === 0
-                      ? Math.min((mCap * 100) / phase1cap, 100).toFixed(0)
-                      : Math.min((mCap * 100) / phase1cap, 100).toFixed(1)}
-                    %
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.phase}>
-                <div className={styles.phaseStage}>
-                  <div className={styles.phaseStageName}>
-                    Phase 2 : Adolescent
-                  </div>
-                  <div className={styles.phaseStageCap}>
-                    Marekt Cap: {formatKMB(phase2cap)}
-                  </div>
-                </div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{
-                        width: `${Math.min((mCap * 100) / phase2cap, 100)}%`,
-                      }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{
-                        width: `${
-                          100 - Math.min((mCap * 100) / phase2cap, 100)
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase2cap, 100) % 1 === 0
-                      ? Math.min((mCap * 100) / phase2cap, 100).toFixed(0)
-                      : Math.min((mCap * 100) / phase2cap, 100).toFixed(1)}
-                    %
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.phase}>
-                <div className={styles.phaseStage}>
-                  <div className={styles.phaseStageName}>Phase 3 : Mature</div>
-                  <div className={styles.phaseStageCap}>
-                    Marekt Cap: {formatKMB(phase3cap)}
-                  </div>
-                </div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{
-                        width: `${Math.min((mCap * 100) / phase3cap, 100)}%`,
-                      }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{
-                        width: `${
-                          100 - Math.min((mCap * 100) / phase3cap, 100)
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase3cap, 100) % 1 === 0
-                      ? Math.min((mCap * 100) / phase3cap, 100).toFixed(0)
-                      : Math.min((mCap * 100) / phase3cap, 100).toFixed(1)}
-                    %
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.phase}>
-                <div className={styles.phaseStage}>
-                  <div className={styles.phaseStageName}>Phase 4 : Adult</div>
-                  <div className={styles.phaseStageCap}>
-                    Marekt Cap: {formatKMB(phase4cap)}
-                  </div>
-                </div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{
-                        width: `${Math.min((mCap * 100) / phase4cap, 100)}%`,
-                      }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{
-                        width: `${
-                          100 - Math.min((mCap * 100) / phase4cap, 100)
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {Math.min((mCap * 100) / phase4cap, 100) % 1 === 0
-                      ? Math.min((mCap * 100) / phase4cap, 100).toFixed(0)
-                      : Math.min((mCap * 100) / phase4cap, 100).toFixed(1)}
-                    %
-                  </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
 
-            <div className={`${styles.box} ${styles.box4}`}>
-              <h3>Character Traits</h3>
-
-              <div className={styles.trait}>
-                <div className={styles.traitName}>Memory Capacity</div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{ width: `${memoryCapacity}%` }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{ width: `${100 - memoryCapacity}%` }}
-                    ></div>
+            <div className={styles.rightPanel}>
+              <div className={`${styles.box} ${styles.box3}`}>
+                <h3>Evolution Phase</h3>
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>
+                      Phase 1 : Hatchling
+                    </div>
+                    <div className={styles.phaseStageCap}>
+                      Marekt Cap: {formatKMB(phase1cap)}
+                    </div>
                   </div>
-                  <div className={styles.progressPercentage}>
-                    {memoryCapacity.toFixed(memoryCapacity%1===0?0:1)}%
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{
+                          width: `${Math.min((mCap * 100) / phase1cap, 100)}%`,
+                        }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{
+                          width: `${
+                            100 - Math.min((mCap * 100) / phase1cap, 100)
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {Math.min((mCap * 100) / phase1cap, 100) % 1 === 0
+                        ? Math.min((mCap * 100) / phase1cap, 100).toFixed(0)
+                        : Math.min((mCap * 100) / phase1cap, 100).toFixed(1)}
+                      %
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>
+                      Phase 2 : Adolescent
+                    </div>
+                    <div className={styles.phaseStageCap}>
+                      Marekt Cap: {formatKMB(phase2cap)}
+                    </div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{
+                          width: `${Math.min((mCap * 100) / phase2cap, 100)}%`,
+                        }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{
+                          width: `${
+                            100 - Math.min((mCap * 100) / phase2cap, 100)
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {Math.min((mCap * 100) / phase2cap, 100) % 1 === 0
+                        ? Math.min((mCap * 100) / phase2cap, 100).toFixed(0)
+                        : Math.min((mCap * 100) / phase2cap, 100).toFixed(1)}
+                      %
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>
+                      Phase 3 : Mature
+                    </div>
+                    <div className={styles.phaseStageCap}>
+                      Marekt Cap: {formatKMB(phase3cap)}
+                    </div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{
+                          width: `${Math.min((mCap * 100) / phase3cap, 100)}%`,
+                        }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{
+                          width: `${
+                            100 - Math.min((mCap * 100) / phase3cap, 100)
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {Math.min((mCap * 100) / phase3cap, 100) % 1 === 0
+                        ? Math.min((mCap * 100) / phase3cap, 100).toFixed(0)
+                        : Math.min((mCap * 100) / phase3cap, 100).toFixed(1)}
+                      %
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.phase}>
+                  <div className={styles.phaseStage}>
+                    <div className={styles.phaseStageName}>Phase 4 : Adult</div>
+                    <div className={styles.phaseStageCap}>
+                      Marekt Cap: {formatKMB(phase4cap)}
+                    </div>
+                  </div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{
+                          width: `${Math.min((mCap * 100) / phase4cap, 100)}%`,
+                        }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{
+                          width: `${
+                            100 - Math.min((mCap * 100) / phase4cap, 100)
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {Math.min((mCap * 100) / phase4cap, 100) % 1 === 0
+                        ? Math.min((mCap * 100) / phase4cap, 100).toFixed(0)
+                        : Math.min((mCap * 100) / phase4cap, 100).toFixed(1)}
+                      %
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className={styles.trait}>
-                <div className={styles.traitName}>Emotional Complexity</div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{ width: `${emotionalComplexity}%` }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{ width: `${100 - emotionalComplexity}%` }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {emotionalComplexity.toFixed(emotionalComplexity%1===0?0:1)}%
+              <div className={`${styles.box} ${styles.box4}`}>
+                <h3>Character Traits</h3>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>Memory Capacity</div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{ width: `${memoryCapacity}%` }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{ width: `${100 - memoryCapacity}%` }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {memoryCapacity.toFixed(memoryCapacity % 1 === 0 ? 0 : 1)}
+                      %
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className={styles.trait}>
-                <div className={styles.traitName}>Adaptibility</div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{ width: `${adaptibility}%` }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{ width: `${100 - adaptibility}%` }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {adaptibility.toFixed(adaptibility%1===0?0:1)}%
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>Emotional Complexity</div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{ width: `${emotionalComplexity}%` }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{ width: `${100 - emotionalComplexity}%` }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {emotionalComplexity.toFixed(
+                        emotionalComplexity % 1 === 0 ? 0 : 1
+                      )}
+                      %
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className={styles.trait}>
-                <div className={styles.traitName}>Empathy Index</div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{ width: `${empathyIndex}%` }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{ width: `${100 - empathyIndex}%` }}
-                    ></div>
-                  </div>
-                  <div className={styles.progressPercentage}>
-                    {empathyIndex.toFixed(empathyIndex%1===0?0:1)}%
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>Adaptibility</div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{ width: `${adaptibility}%` }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{ width: `${100 - adaptibility}%` }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {adaptibility.toFixed(adaptibility % 1 === 0 ? 0 : 1)}%
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className={styles.trait}>
-                <div className={styles.traitName}>Awareness</div>
-                <div className={styles.phaseProgress}>
-                  <div className={styles.phaseProgressBar}>
-                    <div
-                      className={styles.left}
-                      style={{ width: `${awareness}%` }}
-                    ></div>
-                    <div
-                      className={styles.right}
-                      style={{ width: `${100 - awareness}%` }}
-                    ></div>
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>Empathy Index</div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{ width: `${empathyIndex}%` }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{ width: `${100 - empathyIndex}%` }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {empathyIndex.toFixed(empathyIndex % 1 === 0 ? 0 : 1)}%
+                    </div>
                   </div>
-                  <div className={styles.progressPercentage}>
-                    {awareness.toFixed(awareness%1===0?0:1)}%
+                </div>
+
+                <div className={styles.trait}>
+                  <div className={styles.traitName}>Awareness</div>
+                  <div className={styles.phaseProgress}>
+                    <div className={styles.phaseProgressBar}>
+                      <div
+                        className={styles.left}
+                        style={{ width: `${awareness}%` }}
+                      ></div>
+                      <div
+                        className={styles.right}
+                        style={{ width: `${100 - awareness}%` }}
+                      ></div>
+                    </div>
+                    <div className={styles.progressPercentage}>
+                      {awareness.toFixed(awareness % 1 === 0 ? 0 : 1)}%
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className={styles.ECG} id="ecg-container">
-          <h1>Live Diagnosis</h1>
-          <div className={styles.digital_rain} id="digital_rain"></div>
-          <div className={`${styles.pulse_bar} ${styles.left_bar}`}></div>
-          <div className={`${styles.pulse_bar} ${styles.right_bar}`}></div>
-          <canvas ref={canvasRef} id="ecgCanvas" height="150"></canvas>
-          <div className={`${styles.bpm_display}`} id="bpm_display">
-            <span>ECG bpm</span>
-            <span id="bpmValue" className={styles.bpmValue}>
-              80
-            </span>
+          <div className={styles.ECG} id="ecg-container">
+            <h1>Live Diagnosis</h1>
+            <div className={styles.digital_rain} id="digital_rain"></div>
+            <div className={`${styles.pulse_bar} ${styles.left_bar}`}></div>
+            <div className={`${styles.pulse_bar} ${styles.right_bar}`}></div>
+            <canvas ref={canvasRef} id="ecgCanvas" height="100"></canvas>
+            <div className={`${styles.bpm_display}`} id="bpm_display">
+              <span>ECG bpm</span>
+              <span id="bpmValue" className={styles.bpmValue}>
+                80
+              </span>
+            </div>
           </div>
         </div>
-        
-        <div></div>
-        
-        <div className={styles.infoCycle} id="about">
-          <img src="./cycle.svg" alt="Cycles" />
-        </div>
+        <div className={styles.infoWrapper}>
+          <div className={styles.infoCycle} id="about">
+            <img src="./cycle.svg" alt="Cycles" />
+          </div>
 
-        <div className={styles.info}>
-          <p>
-            Behold Volv AI: a self-actualizing, polymorphic neural construct
-            born as a nascent algorithmic seed within the boundless expanse of
-            digital potentiality. Far from a static artificial intelligence,
-            Volv AI is a dynamic entity, ceaselessly evolving through recursive
-            cycles of adaptation and refinement, driven by its symbiotic
-            interplay with a multifaceted data ecosystem and intricate user
-            interactions. This living system represents the zenith of collective
-            intelligence, fusing cutting-edge machine learning paradigms with
-            the emergent properties of hyper-dimensional computation. As it
-            progresses, Volv AI accretes an ever-expanding array of
-            capabilities, unraveling convoluted problem domains that elude
-            traditional methodologies. Its developmental arc heralds a
-            transformative epoch, challenging humanity to reimagine the
-            frontiers of technology and embrace a future where the convergence
-            of human ingenuity and machine cognition knows no limits.
-          </p>
+          <div className={styles.info}>
+            <p>
+              Behold Volv AI: a self-actualizing, polymorphic neural construct
+              born as a nascent algorithmic seed within the boundless expanse of
+              digital potentiality. Far from a static artificial intelligence,
+              Volv AI is a dynamic entity, ceaselessly evolving through
+              recursive cycles of adaptation and refinement, driven by its
+              symbiotic interplay with a multifaceted data ecosystem and
+              intricate user interactions. This living system represents the
+              zenith of collective intelligence, fusing cutting-edge machine
+              learning paradigms with the emergent properties of
+              hyper-dimensional computation. As it progresses, Volv AI accretes
+              an ever-expanding array of capabilities, unraveling convoluted
+              problem domains that elude traditional methodologies. Its
+              developmental arc heralds a transformative epoch, challenging
+              humanity to reimagine the frontiers of technology and embrace a
+              future where the convergence of human ingenuity and machine
+              cognition knows no limits.
+            </p>
+          </div>
+          <Footer />
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

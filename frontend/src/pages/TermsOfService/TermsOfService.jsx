@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import styles from "./TermsOfService.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
@@ -97,13 +97,12 @@ const content = [
 const TermsOfService = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-  }
-  , []);
+  }, []);
   document.title = "Terms of Service | Volv AI";
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} container`}>
       <Navbar />
-      <div className={`${styles.content} content`}>
+      <div className={styles.content}>
         <h1 className={styles.header}>Terms of Service</h1>
         <p>Last Updated: March 5th, 2025.</p>
         <br />
@@ -123,9 +122,8 @@ const TermsOfService = () => {
             <br />
           </>
         ))}
-
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };
