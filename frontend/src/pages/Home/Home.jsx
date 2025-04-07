@@ -872,7 +872,9 @@ function Home() {
             </span>
           </div>
         </div>
-
+        
+        <div></div>
+        
         <div className={styles.infoCycle} id="about">
           <img src="./cycle.svg" alt="Cycles" />
         </div>
