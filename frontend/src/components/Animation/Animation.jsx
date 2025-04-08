@@ -2,7 +2,8 @@ import React from "react";
 import styles from "./Animation.module.css";
 import { useEffect, useRef } from "react";
 
-const Animation = () => {
+const Animation = ({oSettings}) => {
+  console.log(oSettings)
   const canvasRef = useRef(null);
   useEffect(() => {
     const nCanvasRender = canvasRef.current;
@@ -26,9 +27,6 @@ const Animation = () => {
         o["on" + sEvent] = fn;
       }
     };
-    // General Elements
-    const oDoc = document;
-    const nBody = oDoc.body;
     // Shortcuts
     const fPI = Math.PI;
     const fnMax = Math.max;
@@ -63,22 +61,29 @@ const Animation = () => {
 
     let fVX = (2.0 * fPI) / window.iFramesToRotate;
 
-    let oRadGrad = null;
     const ctxRender = nCanvasRender.getContext("2d");
 
     const oRender = { pFirst: null };
     const oBuffer = { pFirst: null };
-
-    let w = 0;
-    let h = 0;
-
-    // gets/sets size
+    // get size
+    const fnGetSize = () => ({
+      w: Math.max(
+        document.documentElement.clientWidth || 0,
+        window.innerWidth || 0
+      ),
+      h: Math.max(
+        document.documentElement.clientHeight || 0,
+        window.innerHeight || 0
+      ),
+    });
+    // sets size
     const fnSetSize = () => {
-      nCanvasRender.width = w = window.innerWidth;
-      nCanvasRender.height = h = window.innerHeight;
-      iProjSphereX = w / 2;
-      iProjSphereY = h / 2 - 100;
-      return { w: w, h: h };
+      const { w, h } = fnGetSize();
+      nCanvasRender.width = w;
+      nCanvasRender.height = h;
+      iProjSphereX = oSettings.iProjSphereX;
+      iProjSphereY = oSettings.iProjSphereY;
+      iRadiusSphere = oSettings.iRadiusSphere;
     };
     const fnSwapList = (p, oSrc, oDst) => {
       if (p) {
@@ -213,11 +218,11 @@ const Animation = () => {
       }
     }
     const fnRender = () => {
+      const { w, h } = fnGetSize();
       ctxRender.fillStyle = "#000";
       ctxRender.fillRect(0, 0, w, h);
 
       let p = oRender.pFirst;
-      let iCount = 0;
       while (p) {
         ctxRender.fillStyle = `rgba(${window.aColor.join(
           ","
@@ -227,7 +232,6 @@ const Animation = () => {
         ctxRender.closePath();
         ctxRender.fill();
         p = p.pNext;
-        iCount += 1;
       }
     };
 
@@ -237,7 +241,6 @@ const Animation = () => {
       fCosAngle = fnCos(fAngle);
 
       let iAddParticle = 0;
-      let iCount = 0;
       while (iAddParticle++ < window.iNewParticlePerFrame) {
         const p = fnSwapList(oBuffer.pFirst, oBuffer, oRender);
         p.fnInit();
@@ -248,7 +251,6 @@ const Animation = () => {
         const pNext = p.pNext;
         p.fnUpdate();
         p = pNext;
-        iCount++;
       }
       fnRender();
 

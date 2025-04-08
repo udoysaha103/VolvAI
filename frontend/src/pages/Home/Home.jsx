@@ -49,9 +49,9 @@ function Home() {
   const formatAge = (timestamp) => {
     const now = Date.now();
     const age = now - timestamp; //in milliseconds
-    const hours = Math.floor(age / (3600000));
-    const minutes = Math.floor((age % (3600000)) / 60000);
-    return `${hours+1}h ${minutes+1}m`;
+    const hours = Math.floor(age / 3600000);
+    const minutes = Math.floor((age % 3600000) / 60000);
+    return `${hours + 1}h ${minutes + 1}m`;
   };
 
   const navigate = useNavigate();
@@ -453,7 +453,18 @@ function Home() {
 
       <div className={styles.homeWrapper}>
         <div className={styles.heroWrapper}>
-          <Animation />
+          {hatchlingRef.current && (
+            <Animation oSettings={(() => {
+              const {x, y, height, width, left, right} =  hatchlingRef.current.getClientRects()[0];
+              console.log(height/2)
+              return {
+                iProjSphereX: x+width/2,
+                iProjSphereY: y+height/2,
+                iRadiusSphere: height/2.7
+              }
+            }
+            )()} />
+          )}
           <div className={styles.hero}>
             <div className={styles.leftPanel}>
               <div className={`${styles.box} ${styles.box1}`}>
@@ -593,14 +604,15 @@ function Home() {
                     className={styles.hatchlingImg}
                   />
                   {!(clickCount > 0 && clickCount < 50) && (
-                    <p className={styles.hatchingText} onClick = {
-                      () => {
-                        if(clickCount > 49){
-                          navigate('/chatbot')
-                          console.log("50 click")
+                    <p
+                      className={styles.hatchingText}
+                      onClick={() => {
+                        if (clickCount > 49) {
+                          navigate("/chatbot");
+                          console.log("50 click");
                         }
-                      }
-                    }>
+                      }}
+                    >
                       {clickCount === 0
                         ? "Click on the egg to hatch."
                         : clickCount > 49
