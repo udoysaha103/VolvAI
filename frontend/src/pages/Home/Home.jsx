@@ -453,18 +453,7 @@ function Home() {
 
       <div className={styles.homeWrapper}>
         <div className={styles.heroWrapper}>
-          {hatchlingRef.current && (
-            <Animation oSettings={(() => {
-              const {x, y, height, width, left, right} =  hatchlingRef.current.getClientRects()[0];
-              console.log(height/2)
-              return {
-                iProjSphereX: x+width/2,
-                iProjSphereY: y+height/2,
-                iRadiusSphere: height/2.7
-              }
-            }
-            )()} />
-          )}
+          <Animation nHatchlingImg={hatchlingRef.current} />
           <div className={styles.hero}>
             <div className={styles.leftPanel}>
               <div className={`${styles.box} ${styles.box1}`}>

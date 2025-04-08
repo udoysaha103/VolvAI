@@ -267,7 +267,6 @@
 
 .hatchlingImg {
   height: 50vh;
-  margin-top: 1.5vh;
   width: auto;
   cursor: pointer;
   animation: levitate 0.9s ease-in-out infinite alternate;

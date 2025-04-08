@@ -2,8 +2,7 @@ import React from "react";
 import styles from "./Animation.module.css";
 import { useEffect, useRef } from "react";
 
-const Animation = ({oSettings}) => {
-  console.log(oSettings)
+const Animation = ({ nHatchlingImg }) => {
   const canvasRef = useRef(null);
   useEffect(() => {
     const nCanvasRender = canvasRef.current;
@@ -34,7 +33,6 @@ const Animation = ({oSettings}) => {
     const fnRnd = Math.random;
     const fnRnd2 = () => 2.0 * fnRnd() - 1.0;
     const fnCos = Math.cos;
-    const fnACos = Math.acos;
     const fnSin = Math.sin;
     // Sphere Settings
     let iRadiusSphere = 180;
@@ -52,7 +50,7 @@ const Animation = ({oSettings}) => {
     let fCosAngle = 0.0;
 
     window.iFramesToRotate = 2000.0;
-    window.iPerspective = 250;
+    window.iPerspective = window.innerHeight/2;
     window.iNewParticlePerFrame = 10;
     window.fGrowDuration = 200.0;
     window.fWaitDuration = 10.0;
@@ -79,11 +77,13 @@ const Animation = ({oSettings}) => {
     // sets size
     const fnSetSize = () => {
       const { w, h } = fnGetSize();
+      const { x, y, width, height } = nHatchlingImg?.getBoundingClientRect() || {x: iProjSphereX, y: iProjSphereY, width: 0, height: 0};
+      console.log(x, y, width, height);
       nCanvasRender.width = w;
       nCanvasRender.height = h;
-      iProjSphereX = oSettings.iProjSphereX;
-      iProjSphereY = oSettings.iProjSphereY;
-      iRadiusSphere = oSettings.iRadiusSphere;
+      iProjSphereX = x + width / 2;
+      iProjSphereY = y + height / 2;
+      iRadiusSphere = height / 2.2;
     };
     const fnSwapList = (p, oSrc, oDst) => {
       if (p) {
@@ -145,7 +145,7 @@ const Animation = ({oSettings}) => {
 
       fnInit() {
         this.fAngle = fnRnd() * fPI * 2;
-        this.fForce = fnACos(fnRnd2());
+        this.fForce = fPI*fnRnd();
         this.fAlpha = 0;
         this.bIsDead = false;
         this.iFramesAlive = 0;
@@ -265,7 +265,7 @@ const Animation = ({oSettings}) => {
     return () => {
       window.removeEventListener("resize", fnSetSize);
     };
-  }, []);
+  }, [nHatchlingImg]);
   return <canvas ref={canvasRef} className={styles.canvas} />; // Add the canvas element
 };
 
