@@ -1,6 +1,6 @@
 .homeWrapper {
   width: 100%;
-  font-size: 0.7vw;
+  font-size: 1.4vh;
 }
 .heroWrapper{
   display: flex;
@@ -23,34 +23,38 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: 2%;
 }
 
-.leftPanel {
+.leftPanel, .rightPanel {
   width: 25%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+.box1, .box3{
+  margin-bottom: 4%;
 }
 
 .box {
-  width: 95%;
+  width: 100%;
   background-color: #101010;
   border: 0.8px solid #fdfdc0;
   box-shadow: -5px -3px 5px #c1ff72;
-  margin-top: 30px;
-  padding: 25px;
+  padding: 5%;
   z-index: 1;
 }
 
 .box h3 {
   font-size: 1.81em;
   font-weight: 700;
-  margin-bottom: 3%;
+  /* margin-bottom: 3%; */
 }
 
-.box1 h3 {
-  margin-bottom: 2%;
+h3{
+  margin-bottom: 3%;
 }
 
 .hatchProgress {
@@ -59,15 +63,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  margin-top: 1%;
 }
 
 .hatchProgressBar {
   width: 100%;
-  height: 27px;
+  height: 4vh;
   background-color: #333432;
   display: flex;
-  /* justify-content: center; */
+  justify-content: flex-start;
   align-items: center;
   position: relative;
 }
@@ -107,7 +110,7 @@
 
 .buySellChart {
   width: 60%;
-  height: 24px;
+  height: 3vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,13 +140,9 @@
   justify-content: flex-end;
 }
 
-.box1 .status {
-  margin-top: 3%;
-}
 
 .box2 {
   box-shadow: -5px 5px 5px #c1ff72;
-  margin-top: 7.5%
 }
 
 .status {
@@ -196,7 +195,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1%;
+  margin-top: 1.2%;
 }
 
 .phaseProgressBar {
@@ -205,10 +204,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 0.8px solid #fdfdc0; */
   overflow: hidden;
   border-radius: 5px;
-  margin-top: 0.5%;
 }
 
 .phaseProgressBar .left {
@@ -332,14 +329,6 @@
   }
 }
 
-.rightPanel {
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-}
-
 .info {
   font-size: 1.72em;
   text-align: justify;
@@ -350,6 +339,8 @@
 /* ECG animation --------------------------------start------------------------------------------------- */
 .ECG {
   width: 60%;
+  height: 15vh;
+  font-size: 1.2vh;
   margin: 0 auto;
   position: relative;
   border: 2px solid #c1ff72;
@@ -476,8 +467,8 @@
 
 .bpm_display {
   position: absolute;
-  top: 55px; /* Increased from 10px to 50px to move it down over the grid */
-  right: 10px;
+  top: 10%; /* Increased from 10px to 50px to move it down over the grid */
+  right: 2%;
   background-color: #000;
   padding: 5px 10px;
   border: 1px solid #c1ff72;

@@ -50,7 +50,7 @@ const Animation = ({ nHatchlingImg }) => {
     let fCosAngle = 0.0;
 
     window.iFramesToRotate = 2000.0;
-    window.iPerspective = window.innerHeight/2;
+    window.iPerspective = window.innerHeight / 2;
     window.iNewParticlePerFrame = 10;
     window.fGrowDuration = 200.0;
     window.fWaitDuration = 10.0;
@@ -77,8 +77,13 @@ const Animation = ({ nHatchlingImg }) => {
     // sets size
     const fnSetSize = () => {
       const { w, h } = fnGetSize();
-      const { x, y, width, height } = nHatchlingImg?.getBoundingClientRect() || {x: iProjSphereX, y: iProjSphereY, width: 0, height: 0};
-      console.log(x, y, width, height);
+      const { x, y, width, height } =
+        nHatchlingImg?.getBoundingClientRect() || {
+          x: iProjSphereX,
+          y: iProjSphereY,
+          width: 0,
+          height: 0,
+        };
       nCanvasRender.width = w;
       nCanvasRender.height = h;
       iProjSphereX = x + width / 2;
@@ -145,7 +150,7 @@ const Animation = ({ nHatchlingImg }) => {
 
       fnInit() {
         this.fAngle = fnRnd() * fPI * 2;
-        this.fForce = fPI*fnRnd();
+        this.fForce = fPI * fnRnd();
         this.fAlpha = 0;
         this.bIsDead = false;
         this.iFramesAlive = 0;

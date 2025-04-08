@@ -81,6 +81,7 @@ function Home() {
 
     const parent = canvas.parentElement;
     canvas.width = parent.clientWidth * 0.98;
+    canvas.height = parent.clientHeight * 0.6;
 
     const width = canvas.width;
     const height = canvas.height;
@@ -403,7 +404,6 @@ function Home() {
   useEffect(() => {
     setHatchProgress(Math.min((mCap * 100) / phase1cap, 100));
     if (hatchProgress === 100) {
-      console.log("Hatch Progress is 100%");
       setHatchingProbability(100);
       setShellIntegrity(0);
     } else {
@@ -598,7 +598,6 @@ function Home() {
                       onClick={() => {
                         if (clickCount > 49) {
                           navigate("/chatbot");
-                          console.log("50 click");
                         }
                       }}
                     >
@@ -879,7 +878,7 @@ function Home() {
             <div className={styles.digital_rain} id="digital_rain"></div>
             <div className={`${styles.pulse_bar} ${styles.left_bar}`}></div>
             <div className={`${styles.pulse_bar} ${styles.right_bar}`}></div>
-            <canvas ref={canvasRef} id="ecgCanvas" height="100"></canvas>
+            <canvas ref={canvasRef} id="ecgCanvas"></canvas>
             <div className={`${styles.bpm_display}`} id="bpm_display">
               <span>ECG bpm</span>
               <span id="bpmValue" className={styles.bpmValue}>
