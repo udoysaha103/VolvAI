@@ -270,7 +270,7 @@ const Animation = ({ nHatchlingImg }) => {
     return () => {
       window.removeEventListener("resize", fnSetSize);
     };
-  }, [nHatchlingImg]);
+  }, []);
   return <canvas ref={canvasRef} className={styles.canvas} />; // Add the canvas element
 };
 

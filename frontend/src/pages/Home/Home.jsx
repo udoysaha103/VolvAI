@@ -8,7 +8,26 @@ import Animation from "../../components/Animation/Animation";
 function Home() {
   const coinAddress = import.meta.env.VITE_COIN_ADDRESS;
   const hatchlingRef = useRef(null);
+  const hatchlingImgs = [
+    "0.png",
+    "2.png",
+    "6.png",
+    "12.png",
+    "20.png",
+    "26.png",
+    "32.png",
+    "40.png",
+    "50.png",
+  ];
+  const [hatchlingImg, setHatchlingImg] = useState(hatchlingImgs[0]);
   const handleClick = () => {
+    // if(hatchlingImg === "50.png") {
+    //   return;
+    // }
+    setClickCount(clickCount + 1);
+    if (hatchlingImgs.includes(`${clickCount}.png`)) {
+      setHatchlingImg(`${clickCount}.png`);
+    }
     if (hatchlingRef.current) {
       const time = 0.1;
       hatchlingRef.current.style.transition = `transform ${time}s`;
@@ -453,7 +472,9 @@ function Home() {
 
       <div className={styles.homeWrapper}>
         <div className={styles.heroWrapper}>
-          <Animation nHatchlingImg={hatchlingRef.current} />
+          {hatchlingRef.current && (
+            <Animation nHatchlingImg={hatchlingRef.current} />
+          )}
           <div className={styles.hero}>
             <div className={styles.leftPanel}>
               <div className={`${styles.box} ${styles.box1}`}>
@@ -564,48 +585,32 @@ function Home() {
             <div className={styles.middlePanel}>
               {hatchProgress < 100 ? (
                 <>
-                  <img
-                    ref={hatchlingRef}
-                    src={
-                      clickCount < 2
-                        ? "0.png"
-                        : clickCount < 6
-                        ? "2.png"
-                        : clickCount < 12
-                        ? "6.png"
-                        : clickCount < 20
-                        ? "12.png"
-                        : clickCount < 26
-                        ? "20.png"
-                        : clickCount < 32
-                        ? "26.png"
-                        : clickCount < 40
-                        ? "32.png"
-                        : clickCount < 50
-                        ? "40.png"
-                        : "50.png"
-                    }
-                    alt="Hatchling"
-                    onClick={() => {
-                      setClickCount(clickCount + 1);
-                      handleClick();
-                    }}
-                    className={styles.hatchlingImg}
-                  />
-                  {!(clickCount > 0 && clickCount < 50) && (
+                  {hatchlingImgs.map((src, index) => (
+                    <img
+                      key={index}
+                      ref={src === hatchlingImg ? hatchlingRef : null}
+                      src={src}
+                      alt="Hatchling"
+                      onClick={handleClick}
+                      className={`${styles.hatchlingImg} ${
+                        src !== hatchlingImg ? styles.inactive : ''
+                      }`}
+                    />
+                  ))}
+
+                  {hatchlingImg === "0.png" && (
                     <p
                       className={styles.hatchingText}
-                      onClick={() => {
-                        if (clickCount > 49) {
-                          navigate("/chatbot");
-                        }
-                      }}
                     >
-                      {clickCount === 0
-                        ? "Click on the egg to hatch."
-                        : clickCount > 49
-                        ? "Wait for the egg to hatch."
-                        : ""}
+                      Click on the egg to hatch
+                    </p>
+                  )}
+                  {hatchlingImg === "50.png" && (
+                    <p
+                      className={styles.hatchingText}
+                      onClick={() => navigate("/chatbot")}
+                    >
+                      Wait for the egg to hatch.
                     </p>
                   )}
                 </>

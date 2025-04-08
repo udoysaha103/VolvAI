@@ -502,3 +502,6 @@ h3{
 .infoCycle img {
   width: 100%;
 }
+.inactive{
+  display:none;
+}
