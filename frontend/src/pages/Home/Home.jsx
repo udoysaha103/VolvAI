@@ -39,9 +39,10 @@ function Home() {
   };
 
   const phase1cap = Number(import.meta.env.VITE_HATCH_CAP);
-  const phase2cap = 300000;
-  const phase3cap = 1000000;
-  const phase4cap = 3000000;
+  const phase2cap = Number(import.meta.env.VITE_P2);
+  const phase3cap = Number(import.meta.env.VITE_P3);
+  const phase4cap = Number(import.meta.env.VITE_P4);
+  
   const formatKMB = (num) => {
     if (num >= 1000000000) {
       return (
