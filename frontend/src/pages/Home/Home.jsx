@@ -620,6 +620,7 @@ function Home() {
                   <img
                     src="./adolescent.png"
                     alt="Adolescent"
+                    ref={hatchlingRef}
                     className={styles.adolescentImg}
                     onClick={() => navigate("/chatbot")}
                   />
