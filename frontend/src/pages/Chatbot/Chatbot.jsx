@@ -37,7 +37,8 @@ import Footer from "../../components/Footer/Footer";
 
 const Chatbot = () => {
   const coinAddress = import.meta.env.VITE_COIN_ADDRESS;
-  const phase1cap = Number(import.meta.env.VITE_HATCH_CAP);
+  // const phase1cap = Number(import.meta.env.VITE_HATCH_CAP);
+  const phase1cap = 10000;
 
   const [mCap, setMCap] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
