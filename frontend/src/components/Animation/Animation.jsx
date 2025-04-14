@@ -55,7 +55,7 @@ const Animation = ({ nHatchlingImg }) => {
     window.fGrowDuration = 200.0;
     window.fWaitDuration = 10.0;
     window.fShrinkDuration = 250.0;
-    window.aColor = [193, 255, 114];
+    window.aColor = [107, 192, 255];
 
     let fVX = (2.0 * fPI) / window.iFramesToRotate;
 

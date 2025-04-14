@@ -14,7 +14,7 @@
   height: 60%;
   width: 70%;
   border-radius: 26px;
-  border: 2px solid #8ebb53;
+  border: 2px solid #6bc0ff;
   display: flex;
   flex-direction: column;
   background-color: rgba(0,0,0,0.81);
@@ -24,16 +24,17 @@
   flex-grow: 1;
   padding: 10px;
   overflow-y: scroll;
-  background-image: url(/wm.svg);
+  background-image: url(/logo.svg);
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 25%;
 }
 .chatContainer::-webkit-scrollbar {
   background-color: transparent;
   width: 10px;
 }
 .chatContainer::-webkit-scrollbar-thumb {
-  background-color: #8ebb53;
+  background-color: #6bc0ff;
   border-radius: 10px;
 }
 .info {
@@ -72,8 +73,8 @@
   border: 0;
   box-sizing: border-box;
   border-radius: 22px;
-  background-color: #618039;
-  color: #ffffff;
+  background-color: #6bc0ff;
+  color: #000;
   font-size: 19px;
   font-family: "Quicksand";
   font-weight: 700;
@@ -84,13 +85,13 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  color: #8cb952;
+  color: #6bc0ff;
   font-size: 14px;
   font-family: "Quicksand";
   line-height: 16px;
 }
 .botText{
-  background-color: #8cb952;
+  background-color: #7cc6ff;
   color: #000000;
   padding: 10px;
   border-radius: 20px;
@@ -98,7 +99,7 @@
   word-wrap: break-word;
 }
 .userText{
-  background-color: #1a240d;
+  background-color: #17507d;
   color: #ffffff;
   padding: 10px;
   border-radius: 20px;
@@ -107,6 +108,10 @@
 }
 .botMessage > * {
   margin-inline: 10px;
+}
+.botMessage > img {
+  height: 40px;
+  width: auto;
 }
 .userMessage {
   display: flex;

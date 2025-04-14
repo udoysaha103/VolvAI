@@ -167,7 +167,7 @@ const Chatbot = () => {
                 <div key={index} className={styles.chatMessage}>
                   {chat.role === "assistant" && (
                     <div className={styles.botMessage}>
-                      <img src="/bot.svg" className={styles.botIcon} />
+                      <img src="/adolescent.png" className={styles.botIcon} />
                       <div className={styles.botText}>
                         <ReactMarkDown>{chat.text}</ReactMarkDown>
                       </div>

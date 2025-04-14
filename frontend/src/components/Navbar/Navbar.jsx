@@ -9,10 +9,10 @@ function Navbar(props) {
         <div className={styles.contentWrapper}>
           <Link className={styles.leftItems} to="/">
             <div className={styles.logoIcon}>
-              <img src="./logo.svg" alt="Volv Logo" />
+              <img src="./logo.png" alt="Gnome Logo" />
             </div>
             <div className={styles.logoText}>
-              <div className={styles.logoTextBold}>Volv AI</div>
+              <div className={styles.logoTextBold}>Gnome AI</div>
               <div className={styles.logoTextVersion}>v 0.1.05</div>
             </div>
           </Link>

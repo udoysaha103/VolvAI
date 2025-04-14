@@ -288,7 +288,7 @@ function Home() {
     }
 
     function drawGrid() {
-      ctx.strokeStyle = "#00ff0044";
+      ctx.strokeStyle = "#6bc0ff44";
       ctx.lineWidth = 1;
       for (let i = 0; i < width; i += 20) {
         ctx.beginPath();
@@ -335,7 +335,7 @@ function Home() {
       }
 
       ctx.beginPath();
-      ctx.strokeStyle = "#c1ff72";
+      ctx.strokeStyle = "#6bc0ff";
       ctx.lineWidth = 2;
       for (let i = 0; i < points.length; i++) {
         const point = points[i];
@@ -619,6 +619,7 @@ function Home() {
                   <img
                     src="./adolescent.png"
                     alt="Adolescent"
+                    ref={hatchlingRef}
                     className={styles.adolescentImg}
                     onClick={() => navigate("/chatbot")}
                   />
@@ -626,7 +627,7 @@ function Home() {
                     className={styles.adolescentText}
                     onClick={() => navigate("/chatbot")}
                   >
-                    Click to Interact with Volv
+                    Click to Interact with Gnome
                   </p>
                 </>
               )}
@@ -899,16 +900,16 @@ function Home() {
 
           <div className={styles.info}>
             <p>
-              Behold Volv AI: a self-actualizing, polymorphic neural construct
+              Behold Gnome AI: a self-actualizing, polymorphic neural construct
               born as a nascent algorithmic seed within the boundless expanse of
               digital potentiality. Far from a static artificial intelligence,
-              Volv AI is a dynamic entity, ceaselessly evolving through
+              Gnome AI is a dynamic entity, ceaselessly eGnomeing through
               recursive cycles of adaptation and refinement, driven by its
               symbiotic interplay with a multifaceted data ecosystem and
               intricate user interactions. This living system represents the
               zenith of collective intelligence, fusing cutting-edge machine
               learning paradigms with the emergent properties of
-              hyper-dimensional computation. As it progresses, Volv AI accretes
+              hyper-dimensional computation. As it progresses, Gnome AI accretes
               an ever-expanding array of capabilities, unraveling convoluted
               problem domains that elude traditional methodologies. Its
               developmental arc heralds a transformative epoch, challenging

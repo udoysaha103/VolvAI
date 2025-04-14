@@ -5,21 +5,21 @@ import Footer from "../../components/Footer/Footer";
 const content = [
   {
     title: "Acceptance of Terms",
-    text: "By using Volv AI, you acknowledge that you have read, understood, and agreed to these Terms of Use. If you do not agree, you must immediately cease all use of Volv AI.",
+    text: "By using Gnome AI, you acknowledge that you have read, understood, and agreed to these Terms of Use. If you do not agree, you must immediately cease all use of Gnome AI.",
   },
   {
     title: "Description of Service",
-    text: "Volv AI is a dynamic, self-evolving intelligence system that leverages recursive adaptation, hyper-dimensional computation, and symbiotic data interactions to provide sophisticated analysis and decision-making capabilities, particularly in the cryptocurrency domain. Volv AI progresses through developmental phases (Hatchling, Adolescent, Mature, Adult), each unlocking new functionalities.",
+    text: "Gnome AI is a dynamic, self-eGnomeing intelligence system that leverages recursive adaptation, hyper-dimensional computation, and symbiotic data interactions to provide sophisticated analysis and decision-making capabilities, particularly in the cryptocurrency domain. Gnome AI progresses through developmental phases (Hatchling, Adolescent, Mature, Adult), each unlocking new functionalities.",
   },
   {
     title: "User Responsibilities",
     text: (
       <>
-        - Compliance: You agree to use Volv AI in compliance with all applicable
+        - Compliance: You agree to use Gnome AI in compliance with all applicable
         laws, regulations, and ethical guidelines.
-        <br />- Customization: While Volv AI is customizable, you are
+        <br />- Customization: While Gnome AI is customizable, you are
         responsible for configuring it within legal and ethical boundaries.
-        <br />- Data Integrity: You must ensure that any data provided to Volv
+        <br />- Data Integrity: You must ensure that any data provided to Gnome
         AI is accurate, lawful, and free from malicious intent.
       </>
     ),
@@ -28,11 +28,11 @@ const content = [
     title: "Intellectual Property",
     text: (
       <>
-        - Ownership: All intellectual property rights in Volv AI, including its
+        - Ownership: All intellectual property rights in Gnome AI, including its
         algorithms, neural architectures, and developmental frameworks, are
-        owned by volv ai.
+        owned by Gnome ai.
         <br />- License: You are granted a limited, non-exclusive,
-        non-transferable license to use Volv AI for its intended purposes.
+        non-transferable license to use Gnome AI for its intended purposes.
       </>
     ),
   },
@@ -40,13 +40,13 @@ const content = [
     title: "Limitations of Liability",
     text: (
       <>
-        - No Guarantees: Volv AI is provided "as is," without warranties of any
-        kind. While it is designed to operate autonomously, Volv AI does not
+        - No Guarantees: Gnome AI is provided "as is," without warranties of any
+        kind. While it is designed to operate autonomously, Gnome AI does not
         guarantee its accuracy, reliability, or suitability for specific
         outcomes.
-        <br />- Risk Acknowledgment: You acknowledge that the use of Volv AI in
+        <br />- Risk Acknowledgment: You acknowledge that the use of Gnome AI in
         cryptocurrency trading or other high-stakes domains carries inherent
-        risks. Volv AI is not liable for any financial losses or damages arising
+        risks. Gnome AI is not liable for any financial losses or damages arising
         from its use.
       </>
     ),
@@ -55,10 +55,10 @@ const content = [
     title: "Ethical Use and Safeguards",
     text: (
       <>
-        - Bias and Fairness: Volv AI incorporates fairness-aware algorithms and
+        - Bias and Fairness: Gnome AI incorporates fairness-aware algorithms and
         bias detection mechanisms. However, you are responsible for monitoring
         its outputs for ethical compliance.
-        <br />- Autonomy: While Volv AI is designed for autonomous operation,
+        <br />- Autonomy: While Gnome AI is designed for autonomous operation,
         you may enable human-in-the-loop (HITL) oversight for critical
         decisions.
       </>
@@ -68,37 +68,37 @@ const content = [
     title: "Data Privacy and Security",
     text: (
       <>
-        - Data Usage: Volv AI processes data to improve its functionality. By
+        - Data Usage: Gnome AI processes data to improve its functionality. By
         using the system, you consent to the collection, storage, and analysis
         of data in accordance with our Privacy Policy.
-        <br />- Security: Volv AI employs state-of-the-art security measures to
-        protect Volv AI and its data ecosystem. However, you are responsible for
+        <br />- Security: Gnome AI employs state-of-the-art security measures to
+        protect Gnome AI and its data ecosystem. However, you are responsible for
         securing your own systems and data inputs.
       </>
     ),
   },
   {
     title: "Termination",
-    text: "Volv AI reserves the right to suspend or terminate your access to Volv AI at any time, without notice, for violations of these Terms of Use or for any other reason at our sole discretion.",
+    text: "Gnome AI reserves the right to suspend or terminate your access to Gnome AI at any time, without notice, for violations of these Terms of Use or for any other reason at our sole discretion.",
   },
   {
     title: "Amendments",
-    text: "We may update these Terms of Use periodically to reflect changes in Volv AI’s functionality or legal requirements. Continued use of Volv AI after such changes constitutes your acceptance of the revised terms.",
+    text: "We may update these Terms of Use periodically to reflect changes in Gnome AI’s functionality or legal requirements. Continued use of Gnome AI after such changes constitutes your acceptance of the revised terms.",
   },
   {
     title: "Governing Law",
-    text: "These Terms of Use are governed by the laws of the State of California, United States of America. Any disputes arising from the use of Volv AI shall be resolved exclusively in the courts of the State of California, United States of America.",
+    text: "These Terms of Use are governed by the laws of the State of California, United States of America. Any disputes arising from the use of Gnome AI shall be resolved exclusively in the courts of the State of California, United States of America.",
   },
   {
     title: "Contact Information",
-    text: "For questions or concerns regarding these Terms of Use, please contact us at: contact@volvai.com",
+    text: "For questions or concerns regarding these Terms of Use, please contact us at: contact@Gnomeai.com",
   },
 ];
 const TermsOfService = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  document.title = "Terms of Service | Volv AI";
+  document.title = "Terms of Service | Gnome AI";
   return (
     <div className={`${styles.container} container`}>
       <Navbar />
@@ -107,9 +107,9 @@ const TermsOfService = () => {
         <p>Last Updated: March 5th, 2025.</p>
         <br />
         <p>
-          Welcome to Volv AI, a self-actualizing, polymorphic neural construct
+          Welcome to Gnome AI, a self-actualizing, polymorphic neural construct
           designed to redefine the boundaries of advanced artificial
-          intelligence. By accessing or using Volv AI, you agree to comply with
+          intelligence. By accessing or using Gnome AI, you agree to comply with
           these Terms of Use. Please read them carefully.
         </p>
         {content.map((section, index) => (

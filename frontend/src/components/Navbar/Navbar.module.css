@@ -1,69 +1,77 @@
-.navWrapper{
-    position: sticky;
-    border-bottom: 2px solid #bbf76e;
-    width: 100%;
-    height: var(--navHeight);
-    background-color: rgba(0, 0, 0, 0.65);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
+.navWrapper {
+  position: sticky;
+  border-bottom: 2px solid #6bc0ff;
+  width: 100%;
+  height: var(--navHeight);
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 
-.contentWrapper{
-    width: 90%;
+.contentWrapper {
+  width: 90%;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.leftItems{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.leftItems {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    text-decoration: none;
+  text-decoration: none;
 }
 
-.logoIcon{
-    height: 63px;
+.logoIcon {
+  height: 40px;
+  margin-right: 3%;
 }
 
-.logoText{
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+.logoIcon > img {
+  height: 100%;
+  width: auto;
 }
 
-.logoTextBold{
-    font-size: 37px;
-    font-weight: 700;
-    line-height: 35px;
-    margin: 0 8px 0 5px;
+.logoText {
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-wrap: nowrap;
 }
 
-.logoTextVersion{
-    font-size: 14px;
+.logoTextBold {
+  font-size: 37px;
+  font-weight: 700;
+  line-height: 35px;
+  margin: 0 8px 0 5px;
+  text-wrap: nowrap;
 }
 
-.rightItems{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+.logoTextVersion {
+  font-size: 14px;
 }
 
-.rightItems > a{
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 19px;
-    margin-left: 20%;
+.rightItems {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.evolve{
-    font-weight: bold;
-    padding: 8px 20px;
-    border-radius: 22px;
-    background-color: #618039;
+.rightItems > a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 19px;
+  margin-left: 20%;
+}
+
+.evolve {
+  font-weight: bold;
+  padding: 8px 20px;
+  border-radius: 22px;
+  background-color: #478bc0;
 }

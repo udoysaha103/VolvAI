@@ -52,7 +52,7 @@ const Features = () => {
       <div className={styles.row}>
         <img src="/adult.png" onClick={() => navigate("/chatbot")} />
         <div className={styles.text}>
-          <h1 className={styles.header}>Adult: v1.0_OmniTrade_Volv AI</h1>
+          <h1 className={styles.header}>Adult: v1.0_OmniTrade_Gnome AI</h1>
           <ul>
             <li>Meme Virality Score</li>
             <li>Fully Automated Trading</li>
